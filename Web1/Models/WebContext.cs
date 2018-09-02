@@ -6,8 +6,12 @@ using System.Web;
 
 namespace Web1.Models
 {
-    public class WebContext : DBContext
+    public class WebContext : DbContext
     {
-        public 
+        public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Patient> Patients { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Checkup> Checkups { get; set; }
+
     }
 }
