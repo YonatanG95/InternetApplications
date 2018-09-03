@@ -7,7 +7,7 @@ namespace Web1.Models
 {
     public class Checkup
     {
-        public string CheckupID;
+        public string CheckupID { get; set; }
         public virtual Patient Patient { get; set; }
 
         public virtual Doctor Doctor { get; set; }

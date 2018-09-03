@@ -12,5 +12,6 @@ namespace Web1.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Specialization { get; set; }
+
     }
 }
