@@ -71,7 +71,7 @@ namespace Web1.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("DoctorID", "DoctorID doesn't exist")
+                    ModelState.AddModelError("DoctorID", "DoctorID doesn't exist");
                 }
             }
         }
