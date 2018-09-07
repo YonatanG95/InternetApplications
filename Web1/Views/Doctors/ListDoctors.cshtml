@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Web1.Models.Doctor>
+
+@{
+    ViewBag.Title = "Doctors List";
+}
+
+<h2>Doctors List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateDoctor")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditDoctor", new { id = item.DoctorID }) |
+                @Html.ActionLink("Details", "DoctorDetails", new { id = item.DoctorID }) |
+                @Html.ActionLink("Delete", "DeleteDoctor", new { id = item.DoctorID })
+            </td>
+        </tr>
+    }
+
+</table>

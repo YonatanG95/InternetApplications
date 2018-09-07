@@ -1,0 +1,31 @@
+﻿@model Web1.Models.Patient
+
+@{
+    ViewBag.Title = "Patient Details";
+}
+
+<h2>Patient Details</h2>
+
+<div>
+    <h4>Patient</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+    </dl>
+</div>
+
+<p>
+    <b>Name:</b> @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName) <br>
+    <b>Age:</b> @Html.DisplayFor(model => model.Age)
+</p>
+
+<p>
+    @Html.ActionLink("Back to List", "ListPatients")
+</p>
