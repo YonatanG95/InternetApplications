@@ -1,10 +1,10 @@
 ﻿@model Web1.Models.Checkup
 
 @{
-    ViewBag.Title = "Delete Checkup";
+    ViewBag.Title = "Delete";
 }
 
-<h2>Delete Checkup</h2>
+<h2>Delete</h2>
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
@@ -12,22 +12,29 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.CheckupID)
+            @Html.DisplayNameFor(model => model.type)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CheckupID)
+            @Html.DisplayFor(model => model.type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.result)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.result)
         </dd>
 
     </dl>
 
-    @using (Html.BeginForm())
-    {
+    @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "ListCheckups")
+            @Html.ActionLink("Back to List", "Index")
         </div>
     }
 </div>

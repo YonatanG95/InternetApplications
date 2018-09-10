@@ -10,107 +10,107 @@ using Web1.Models;
 
 namespace Web1.Controllers
 {
-    public class DoctorsController : Controller
+    public class CheckupsController : Controller
     {
         private WebContext db = new WebContext();
 
-        // GET: Doctors
+        // GET: Checkups
         public ActionResult Index()
         {
-            return View(db.Doctors.ToList());
+            return View(db.Checkups.ToList());
         }
 
-        // GET: Doctors/Details/5
+        // GET: Checkups/Details/5
         public ActionResult Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Doctor doctor = db.Doctors.Find(id);
-            if (doctor == null)
+            Checkup checkup = db.Checkups.Find(id);
+            if (checkup == null)
             {
                 return HttpNotFound();
             }
-            return View(doctor);
+            return View(checkup);
         }
 
-        // GET: Doctors/Create
+        // GET: Checkups/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Doctors/Create
+        // POST: Checkups/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Password,FirstName,LastName,Specialization")] Doctor doctor)
+        public ActionResult Create([Bind(Include = "ID,type,result")] Checkup checkup)
         {
             if (ModelState.IsValid)
             {
-                db.Doctors.Add(doctor);
+                db.Checkups.Add(checkup);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(doctor);
+            return View(checkup);
         }
 
-        // GET: Doctors/Edit/5
+        // GET: Checkups/Edit/5
         public ActionResult Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Doctor doctor = db.Doctors.Find(id);
-            if (doctor == null)
+            Checkup checkup = db.Checkups.Find(id);
+            if (checkup == null)
             {
                 return HttpNotFound();
             }
-            return View(doctor);
+            return View(checkup);
         }
 
-        // POST: Doctors/Edit/5
+        // POST: Checkups/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Password,FirstName,LastName,Specialization")] Doctor doctor)
+        public ActionResult Edit([Bind(Include = "ID,type,result")] Checkup checkup)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(doctor).State = EntityState.Modified;
+                db.Entry(checkup).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(doctor);
+            return View(checkup);
         }
 
-        // GET: Doctors/Delete/5
+        // GET: Checkups/Delete/5
         public ActionResult Delete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Doctor doctor = db.Doctors.Find(id);
-            if (doctor == null)
+            Checkup checkup = db.Checkups.Find(id);
+            if (checkup == null)
             {
                 return HttpNotFound();
             }
-            return View(doctor);
+            return View(checkup);
         }
 
-        // POST: Doctors/Delete/5
+        // POST: Checkups/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Doctor doctor = db.Doctors.Find(id);
-            db.Doctors.Remove(doctor);
+            Checkup checkup = db.Checkups.Find(id);
+            db.Checkups.Remove(checkup);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -162,10 +162,9 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\CheckupController.cs" />
-    <Compile Include="Controllers\DoctorsController.cs" />
+    <Compile Include="Controllers\CheckupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\PatientsController.cs" />
+    <Compile Include="Controllers\DoctorsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -177,7 +176,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Web1.Models.WebContext.mdf" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -215,25 +213,20 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Doctors\ListDoctors.cshtml" />
-    <Content Include="Views\Doctors\DeleteDoctor.cshtml" />
-    <Content Include="Views\Doctors\DoctorDetails.cshtml" />
-    <Content Include="Views\Doctors\EditDoctor.cshtml" />
-    <Content Include="Views\Doctors\CreateDoctor.cshtml" />
-    <Content Include="Views\Patients\ListPatients.cshtml" />
-    <Content Include="Views\Patients\CreatePatient.cshtml" />
-    <Content Include="Views\Patients\DeletePatient.cshtml" />
-    <Content Include="Views\Patients\PatientDetails.cshtml" />
-    <Content Include="Views\Checkups\ListCheckups.cshtml" />
-    <Content Include="Views\Checkups\CheckupDetails.cshtml" />
-    <Content Include="Views\Checkups\AddCheckup.cshtml" />
-    <Content Include="Views\Checkups\UpdateCheckup.cshtml" />
-    <Content Include="Views\Checkups\DeleteCheckup.cshtml" />
+    <Content Include="Views\Doctors\Create.cshtml" />
+    <Content Include="Views\Doctors\Delete.cshtml" />
+    <Content Include="Views\Doctors\Details.cshtml" />
+    <Content Include="Views\Doctors\Edit.cshtml" />
+    <Content Include="Views\Doctors\Index.cshtml" />
+    <Content Include="Views\Checkups\Create.cshtml" />
+    <Content Include="Views\Checkups\Delete.cshtml" />
+    <Content Include="Views\Checkups\Details.cshtml" />
+    <Content Include="Views\Checkups\Edit.cshtml" />
+    <Content Include="Views\Checkups\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

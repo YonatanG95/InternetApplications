@@ -7,7 +7,7 @@ namespace Web1.Models
 {
     public class Doctor
     {
-        public string DoctorID { get; set; }
+        public string ID { get; set; }
         public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
