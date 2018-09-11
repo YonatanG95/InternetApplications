@@ -17,6 +17,12 @@
         <th>
             @Html.DisplayNameFor(model => model.Result)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Doctor_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Patient_ID)
+        </th>
         <th></th>
     </tr>
 
@@ -27,6 +33,12 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Result)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Doctor_ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Patient_ID)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |

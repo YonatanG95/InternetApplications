@@ -46,7 +46,7 @@ namespace Web1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Date_Time,IsAvaliable")] Appointment appointment)
+        public ActionResult Create([Bind(Include = "ID,Date_Time,IsAvaliable,Doctor_ID,Patient_ID")] Appointment appointment)
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +78,7 @@ namespace Web1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Date_Time,IsAvaliable")] Appointment appointment)
+        public ActionResult Edit([Bind(Include = "ID,Date_Time,IsAvaliable,Doctor_ID,Patient_ID")] Appointment appointment)
         {
             if (ModelState.IsValid)
             {

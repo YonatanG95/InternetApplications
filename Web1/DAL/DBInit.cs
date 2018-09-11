@@ -14,7 +14,9 @@ namespace Web1.DAL
             var doctors = new List<Doctor>
             {
                 new Doctor{ID="123456123", FirstName="Amir", LastName="Mizrahi", Password="123456", Specialization="Eyes"},
-                new Doctor{ID="987654321", FirstName="Inon", LastName="Weber", Password="123456", Specialization="Family"}
+                new Doctor{ID="987654321", FirstName="Inon", LastName="Weber", Password="123456", Specialization="Neurologist"},
+                new Doctor{ID="543216789", FirstName="Or", LastName="Chech", Password="123456", Specialization="Cardiologist"},
+                new Doctor{ID="098765432", FirstName="Maayan", LastName="Katz", Password="123456", Specialization="Orthopedist"}             
             };
             doctors.ForEach(d => context.Doctors.Add(d));
             context.SaveChanges();
