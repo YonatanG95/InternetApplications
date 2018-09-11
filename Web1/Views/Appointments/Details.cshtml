@@ -1,0 +1,34 @@
+﻿@model Web1.Models.Appointment
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Appointment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Date_Time)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date_Time)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsAvaliable)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsAvaliable)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
