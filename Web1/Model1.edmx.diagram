@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ea75d8828b1e46bca3c75bd1befd14d3" Name="Diagram1">
+        <EntityTypeShape EntityType="Web1.Models.WebContextModel.C__MigrationHistory" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Web1.Models.WebContextModel.Appointments" Width="1.5" PointX="3" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Web1.Models.WebContextModel.Checkups" Width="1.5" PointX="6" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Web1.Models.WebContextModel.Doctors" Width="1.5" PointX="0.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Web1.Models.WebContextModel.Patients" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
+        <AssociationConnector Association="Web1.Models.WebContextModel.FK_dbo_Appointments_dbo_Doctors_Doctor_ID" ManuallyRouted="false" />
+        <AssociationConnector Association="Web1.Models.WebContextModel.FK_dbo_Appointments_dbo_Patients_Patient_ID" ManuallyRouted="false" />
+        <AssociationConnector Association="Web1.Models.WebContextModel.FK_dbo_Checkups_dbo_Doctors_Doctor_ID" ManuallyRouted="false" />
+        <AssociationConnector Association="Web1.Models.WebContextModel.FK_dbo_Checkups_dbo_Patients_Patient_ID" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

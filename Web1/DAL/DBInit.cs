@@ -27,6 +27,13 @@ namespace Web1.DAL
             };
             patients.ForEach(p => context.Patients.Add(p));
             context.SaveChanges();
+
+            var checkups = new List<Checkup>
+            {
+                new Checkup{ ID="1234", Result=true, Type="Blood", Doctor_ID="987654321", Patient_ID="444444123"}
+            };
+            checkups.ForEach(c => context.Checkups.Add(c));
+            context.SaveChanges();
         }
     }
 }
