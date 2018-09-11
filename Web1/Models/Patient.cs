@@ -17,5 +17,8 @@ namespace Web1.Models
         public string City { get; set; }
         public string Address { get; set; }
         public string Zip { get; set; }
+
+        public virtual ICollection<Appointments> Appointments { get; set; }
+        public virtual ICollection<Checkups> Checkups { get; set; }
     }
 }

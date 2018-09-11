@@ -12,6 +12,9 @@ namespace Web1.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Specialization { get; set; }
-
+    
+        public virtual ICollection<Appointments> Appointments { get; set; }
+       
+        public virtual ICollection<Checkups> Checkups { get; set; }
     }
 }
