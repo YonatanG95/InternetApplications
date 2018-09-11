@@ -7,7 +7,7 @@ namespace Web1.Models
 {
     public class Appointment
     {
-        public string appointmentID { get; set; }
+        public string ID { get; set; }
         public virtual Patient Patient { get; set; }
         public virtual Doctor Doctor { get; set; }
         public DateTime Date_Time { get; set; }

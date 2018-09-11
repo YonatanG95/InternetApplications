@@ -9,15 +9,13 @@ namespace Web1.Models
     public class Checkup
     {
         public string ID { get; set; }
-
-        //[Association(name: "PatientCheckup", thisKey: "Patient_PatientID", otherKey: "PatientID", IsForeignKey = true)]
-        //public virtual Patient Patient_PatientID { get; set; }
-
-        //[Association(name: "DoctorCheckup", thisKey: "Doctor_DoctorID", otherKey: "DoctorID", IsForeignKey = true)]
+     
+        public virtual Patient Patient { get; set; }
+      
         public virtual Doctor Doctor { get; set; }
 
-        public string type { get; set; }
+        public string Type { get; set; }
 
-        public bool result { get; set; }
+        public bool Result { get; set; }
     }
 }
