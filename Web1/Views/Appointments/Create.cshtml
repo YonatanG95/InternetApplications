@@ -81,7 +81,7 @@
     <script src="/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
     <script>
         jQuery('#datetimepicker').datetimepicker({
-            format: 'm/d/Y H:i:00',
+            format: 'd/m/Y H:i:00',
             minTime: '08:00',
             maxTime: '18:00',
             disabledWeekDays: [5, 6]
@@ -95,7 +95,7 @@
                 alert('You have to put in the doctor before the date');
             }
             else {
-                var url = '@Url.Action("functionName", "ControllerName")';
+                var url = '@Url.Action("CheckAvailableDate", "AppointmentsController")';
                 $.post(url, { doctor: doctor.val(), datetime:date.val() }, function (data) {
                     if (data == 'booked') {
                         $(date).val(null);

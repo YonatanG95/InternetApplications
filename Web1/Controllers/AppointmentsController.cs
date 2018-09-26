@@ -123,5 +123,19 @@ namespace Web1.Controllers
             }
             base.Dispose(disposing);
         }
+
+        [HttpPost]
+        public string CheckAvailableDate(string doctorID, DateTime dateTime)
+        {
+            foreach (Appointment appointment in db.Appointments.ToList())
+            {
+                if (appointment.Doctor_ID == doctorID)
+                {
+                    if (appointment.Date_Time.Equals(dateTime))
+                        return "booked";
+                }
+            }
+            return "not booked";
+        }
     }
 }
