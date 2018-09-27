@@ -124,7 +124,7 @@ namespace Web1.Controllers
             base.Dispose(disposing);
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("CheckAvailableDate")]
         public string CheckAvailableDate(string doctorID, DateTime dateTime)
         {
             foreach (Appointment appointment in db.Appointments.ToList())
