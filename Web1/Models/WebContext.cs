@@ -8,6 +8,12 @@ namespace Web1.Models
 {
     public class WebContext : DbContext 
     {
+
+        public WebContext()
+        : base("Web1.Models.WebContext")
+        {
+        }
+
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Appointment> Appointments { get; set; }

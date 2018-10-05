@@ -7,17 +7,38 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Web1.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+
 
 namespace Web1.Controllers
 {
     public class DoctorsController : Controller
     {
         private WebContext db = new WebContext();
+        private ApplicationDbContext appDb = new ApplicationDbContext();
 
         // GET: Doctors
         public ActionResult Index()
         {
-            return View(db.Doctors.ToList());
+            if (User.Identity.IsAuthenticated)
+            {
+                string id = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(User.Identity.GetUserId());
+                if (roles[0] == "Doctor")
+                {
+                    return View(db.Doctors.ToList());
+                }
+                else
+                {
+                    return View("AccessDenied");
+                }
+            }
+            else
+            {
+                return View("NotLoggedIn");
+            }
         }
 
         // GET: Doctors/Details/5

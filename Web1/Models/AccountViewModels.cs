@@ -79,6 +79,11 @@ namespace Web1.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Uid")]
+        public string Uid { get; set; }
     }
 
     public class ResetPasswordViewModel
