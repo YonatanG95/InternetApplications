@@ -7,12 +7,16 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Web1.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+
 
 namespace Web1.Controllers
 {
     public class CheckupsController : Controller
     {
         private WebContext db = new WebContext();
+        private ApplicationDbContext appDb = new ApplicationDbContext();
 
         // GET: Checkups
         public ActionResult Index()
@@ -122,6 +126,44 @@ namespace Web1.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+
+        // GET: Checkups/ShowUser
+        public ActionResult ShowUser()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                List<Checkup> checkups = new List<Checkup>();
+                string id = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(User.Identity.GetUserId());
+                if (roles[0] == "Doctor")
+                {
+                    foreach (Checkup checkup in db.Checkups.ToList())
+                    {
+                        if (checkup.Doctor_ID == id)
+                        {
+                            checkups.Add(checkup);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (Checkup checkup in db.Checkups.ToList())
+                    {
+                        if (checkup.Patient_ID == id)
+                        {
+                            checkups.Add(checkup);
+                        }
+                    }
+                }
+                return View(checkups);
+            }
+            else
+            {
+                return View("NotLoggedIn");
+            }
         }
     }
 }
