@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Web1.Models;
 using Microsoft.AspNet.Identity;
@@ -21,28 +18,86 @@ namespace Web1.Controllers
         // GET: Checkups
         public ActionResult Index()
         {
-            return View(db.Checkups.ToList());
+            if (User.Identity.IsAuthenticated)
+            {
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    return View(db.Checkups.ToList());
+                }
+                else
+                {
+                    return View("AccessDenied");
+                }
+            }
+            else
+            {
+                return View("NotLoggedIn");
+            }
         }
 
         // GET: Checkups/Details/5
         public ActionResult Details(string id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Checkup checkup = db.Checkups.Find(id);
+                if (checkup == null)
+                {
+                    return HttpNotFound();
+                }
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    return View(checkup);
+                }
+                else
+                {
+                    if (cid == checkup.Patient_ID)
+                    {
+                        return View(checkup);
+                    }
+                    else
+                    {
+                        return View("AccessDenied");
+                    }
+                }
             }
-            Checkup checkup = db.Checkups.Find(id);
-            if (checkup == null)
+            else
             {
-                return HttpNotFound();
+                return View("NotLoggedIn");
             }
-            return View(checkup);
         }
 
         // GET: Checkups/Create
         public ActionResult Create()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    return View();
+                }
+                else
+                {
+                    return View("AccessDenied");
+                }
+            }
+            else
+            {
+                return View("NotLoggedIn");
+            }
         }
 
         // POST: Checkups/Create
@@ -52,14 +107,31 @@ namespace Web1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Type,Result,Doctor_ID,Patient_ID")] Checkup checkup)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                db.Checkups.Add(checkup);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.Checkups.Add(checkup);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
 
-            return View(checkup);
+                    return View(checkup);
+                }
+                else
+                {
+                    return View("AccessDenied");
+                }
+            }
+            else
+            {
+                return View("NotLoggedIn");
+            }
         }
 
         // GET: Checkups/Edit/5
@@ -74,7 +146,24 @@ namespace Web1.Controllers
             {
                 return HttpNotFound();
             }
-            return View(checkup);
+            if (User.Identity.IsAuthenticated)
+            {
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    return View(checkup);
+                }
+                else
+                {
+                    return View("AccessDenied");
+                }
+            }
+            else
+            {
+                return View("NotLoggedIn");
+            }
         }
 
         // POST: Checkups/Edit/5
@@ -84,28 +173,62 @@ namespace Web1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Type,Result,Doctor_ID,Patient_ID")] Checkup checkup)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                db.Entry(checkup).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.Entry(checkup).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    return View(checkup);
+                }
+                else
+                {
+                    return View("AccessDenied");
+                }
             }
-            return View(checkup);
+            else
+            {
+                return View("NotLoggedIn");
+            }
         }
 
         // GET: Checkups/Delete/5
         public ActionResult Delete(string id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Checkup checkup = db.Checkups.Find(id);
+                    if (checkup == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(checkup);
+                }
+                else
+                {
+                    return View("AccessDenied");
+                }
             }
-            Checkup checkup = db.Checkups.Find(id);
-            if (checkup == null)
+            else
             {
-                return HttpNotFound();
+                return View("NotLoggedIn");
             }
-            return View(checkup);
         }
 
         // POST: Checkups/Delete/5
@@ -113,10 +236,35 @@ namespace Web1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Checkup checkup = db.Checkups.Find(id);
-            db.Checkups.Remove(checkup);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (User.Identity.IsAuthenticated)
+            {
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Checkup checkup = db.Checkups.Find(id);
+                    if (checkup == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    db.Checkups.Remove(checkup);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View("AccessDenied");
+                }
+            }
+            else
+            {
+                return View("NotLoggedIn");
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -129,20 +277,20 @@ namespace Web1.Controllers
         }
 
 
-        // GET: Checkups/ShowUser
-        public ActionResult ShowUser()
+        // GET: Checkups/ShowUserCheckups
+        public ActionResult ShowUserCheckups()
         {
             if (User.Identity.IsAuthenticated)
             {
                 List<Checkup> checkups = new List<Checkup>();
-                string id = User.Identity.GetUserId();
+                string cid = User.Identity.GetUserId();
                 UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
-                var roles = userManager.GetRoles(User.Identity.GetUserId());
+                var roles = userManager.GetRoles(cid);
                 if (roles[0] == "Doctor")
                 {
                     foreach (Checkup checkup in db.Checkups.ToList())
                     {
-                        if (checkup.Doctor_ID == id)
+                        if (cid == checkup.Doctor_ID)
                         {
                             checkups.Add(checkup);
                         }
@@ -152,7 +300,7 @@ namespace Web1.Controllers
                 {
                     foreach (Checkup checkup in db.Checkups.ToList())
                     {
-                        if (checkup.Patient_ID == id)
+                        if (cid == checkup.Patient_ID)
                         {
                             checkups.Add(checkup);
                         }

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using Web1.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin;
-using Microsoft.Owin.Security;
 
 
 namespace Web1.DAL
@@ -32,8 +26,8 @@ namespace Web1.DAL
             //Initialize patients
             var patients = new List<Patient>
             {
-                new Patient{ID="444444123", FirstName="Yosef", LastName="Yaakov", Password="123456", Address="Hatikva 6", City="Ramla", Age=23, Latitude=31.92923, Longitude=34.8823322, Zip="43254"},
-                new Patient{ID="123456789", FirstName="Yonatan", LastName="Glozman", Password="123456", Address="Lean 2", City="Ramat Gan", Age=22, Latitude=32.0837731, Longitude=34.810031, Zip="12345"}
+                new Patient{ID="444444123", FirstName="Yosef", LastName="Yaakov", Address="Hatikva 6", City="Ramla", Age=23, Latitude=31.92923, Longitude=34.8823322, Zip="43254"},
+                new Patient{ID="123456789", FirstName="Yonatan", LastName="Glozman", Address="Lean 2", City="Ramat Gan", Age=22, Latitude=32.0837731, Longitude=34.810031, Zip="12345"}
             };
             patients.ForEach(p => context.Patients.Add(p));
             context.SaveChanges();
@@ -66,14 +60,6 @@ namespace Web1.DAL
             userManager.Create(patientUser1, "Aa123456!");
             userManager.AddToRole(patientUser1.Id, "Patient");
             appContext.SaveChanges();
-
-            var appUsers = new List<ApplicationUser>
-            {
-                
-                new ApplicationUser { UserName = "inonw@gmail.com", Email = "inonw@gmail.com", Id = "987654321"},
-                new ApplicationUser { UserName = "yosefy@gmail.com", Email = "yosefy@gmail.com", Id = "444444123"}
-            };
-
             context.SaveChanges();
         }
     }

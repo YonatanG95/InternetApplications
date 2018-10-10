@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -422,6 +420,55 @@ namespace Web1.Controllers
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
+        }
+
+        // POST: /Account/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmed(string id)
+        {
+            if (ModelState.IsValid)
+            {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+                }
+
+                var user = await _userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                var logins = user.Logins;
+                var rolesForUser = await _userManager.GetRolesAsync(id);
+                ApplicationDbContext appContext = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+
+
+                using (var transaction = appContext.Database.BeginTransaction())
+                {
+                    foreach (var login in logins.ToList())
+                    {
+                        await _userManager.RemoveLoginAsync(login.UserId, new UserLoginInfo(login.LoginProvider, login.ProviderKey));
+                    }
+
+                    if (rolesForUser.Count() > 0)
+                    {
+                        foreach (var item in rolesForUser.ToList())
+                        {
+                            // item should be the name of the role
+                            var result = await _userManager.RemoveFromRoleAsync(user.Id, item);
+                        }
+                    }
+
+                    await _userManager.DeleteAsync(user);
+                    transaction.Commit();
+                }
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         //

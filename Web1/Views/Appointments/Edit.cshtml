@@ -1,4 +1,7 @@
-﻿@model Web1.Models.Appointment
+﻿@using Microsoft.AspNet.Identity;
+@using Web1.Models;
+@using Microsoft.AspNet.Identity.EntityFramework;
+@model Web1.Models.Appointment
 
 @{
     ViewBag.Title = "Edit";
@@ -10,7 +13,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Appointment</h4>
         <hr />
@@ -46,8 +49,23 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Patient_ID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Patient_ID, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Patient_ID, "", new { @class = "text-danger" })
+                @{
+                    string cid = User.Identity.GetUserId();
+                    UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                    var roles = userManager.GetRoles(cid);
+                    if (roles[0] == "Doctor")
+                    {
+                        @Html.EditorFor(model => model.Patient_ID, new { htmlAttributes = new { @class = "form-control" } })
+                        @*@Html.DropDownListFor(model => model.Patient_ID, new SelectList(Model.patients, "Value", "Text"), new { htmlAttributes = new { @class = "form-control"} })*@
+                        @Html.ValidationMessageFor(model => model.Patient_ID, "", new { @class = "text-danger" })
+                    }
+                    else
+                    {
+                        @Html.EditorFor(model => model.Patient_ID, new { htmlAttributes = new { @class = "form-control", @Value = HttpContext.Current.User.Identity.GetUserId(), @readonly = "readonly" } })
+                        @*@Html.DropDownListFor(model => model.Patient_ID, new SelectList(Model.patients, "Value", "Text"), new { htmlAttributes = new { @class = "form-control"} })*@
+                        @Html.ValidationMessageFor(model => model.Patient_ID, "", new { @class = "text-danger" })
+                    }
+                }
             </div>
         </div>
 

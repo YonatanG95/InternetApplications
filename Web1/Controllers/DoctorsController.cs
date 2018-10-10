@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -23,9 +20,9 @@ namespace Web1.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                string id = User.Identity.GetUserId();
+                string cid = User.Identity.GetUserId();
                 UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
-                var roles = userManager.GetRoles(User.Identity.GetUserId());
+                var roles = userManager.GetRoles(cid);
                 if (roles[0] == "Doctor")
                 {
                     return View(db.Doctors.ToList());
@@ -44,22 +41,57 @@ namespace Web1.Controllers
         // GET: Doctors/Details/5
         public ActionResult Details(string id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Doctor doctor = db.Doctors.Find(id);
+                    if (doctor == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(doctor);
+                }
+                else
+                {
+                    return View("AccessDenied");
+                }
             }
-            Doctor doctor = db.Doctors.Find(id);
-            if (doctor == null)
+            else
             {
-                return HttpNotFound();
+                return View("NotLoggedIn");
             }
-            return View(doctor);
+            
         }
 
         // GET: Doctors/Create
         public ActionResult Create()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    return View();
+                }
+                else
+                {
+                    return View("AccessDenied");
+                }
+            }
+            else
+            {
+                return View("NotLoggedIn");
+            }
         }
 
         // POST: Doctors/Create
@@ -69,29 +101,63 @@ namespace Web1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Password,FirstName,LastName,Specialization")] Doctor doctor)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                db.Doctors.Add(doctor);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.Doctors.Add(doctor);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    return View(doctor);
+                }
+                else
+                {
+                    return View("AccessDenied");
+                }
             }
-
-            return View(doctor);
+            else
+            {
+                return View("NotLoggedIn");
+            }
         }
 
         // GET: Doctors/Edit/5
         public ActionResult Edit(string id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Doctor doctor = db.Doctors.Find(id);
+                    if (doctor == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(doctor);
+                }
+                else
+                {
+                    return View("AccessDenied");
+                }
             }
-            Doctor doctor = db.Doctors.Find(id);
-            if (doctor == null)
+            else
             {
-                return HttpNotFound();
+                return View("NotLoggedIn");
             }
-            return View(doctor);
+            
         }
 
         // POST: Doctors/Edit/5
@@ -101,28 +167,64 @@ namespace Web1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Password,FirstName,LastName,Specialization")] Doctor doctor)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                db.Entry(doctor).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    if (ModelState.IsValid)
+                    {
+
+                        db.Entry(doctor).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    return View(doctor);
+                }
+                else
+                {
+                    return View("AccessDenied");
+                }
             }
-            return View(doctor);
+            else
+            {
+                return View("NotLoggedIn");
+            }
         }
 
         // GET: Doctors/Delete/5
         public ActionResult Delete(string id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Doctor doctor = db.Doctors.Find(id);
+                    if (doctor == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(doctor);
+                }
+                else
+                {
+                    return View("AccessDenied");
+                }
             }
-            Doctor doctor = db.Doctors.Find(id);
-            if (doctor == null)
+            else
             {
-                return HttpNotFound();
+                return View("NotLoggedIn");
             }
-            return View(doctor);
+            
         }
 
         // POST: Doctors/Delete/5
@@ -130,10 +232,70 @@ namespace Web1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Doctor doctor = db.Doctors.Find(id);
-            db.Doctors.Remove(doctor);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (User.Identity.IsAuthenticated)
+            {
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Doctor doctor = db.Doctors.Find(id);
+                    db.Doctors.Remove(doctor);
+                    db.SaveChanges();
+                    if (ModelState.IsValid)
+                    {
+                        var user = userManager.FindById(id);
+                        if (user == null)
+                        {
+                            return RedirectToAction("Index");
+                        }
+                        
+                        // Log user off if current user is being deleted
+                        if (cid == id)
+                        {
+                            HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                        }
+                        var logins = user.Logins;
+                        var rolesForUser = userManager.GetRoles(id);
+
+                        using (var transaction = appDb.Database.BeginTransaction())
+                        {
+                            foreach (var login in logins.ToList())
+                            {
+                                userManager.RemoveLogin(login.UserId, new UserLoginInfo(login.LoginProvider, login.ProviderKey));
+                            }
+
+                            if (rolesForUser.Count() > 0)
+                            {
+                                foreach (var item in rolesForUser.ToList())
+                                {
+                                    var result = userManager.RemoveFromRole(user.Id, item);
+                                }
+                            }
+
+                            userManager.Delete(user);
+                            transaction.Commit();
+                        }
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        return View();
+                    }
+                }
+                else
+                {
+                    return View("AccessDenied");
+                }
+            }
+            else
+            {
+                return View("NotLoggedIn");
+            }   
         }
 
         protected override void Dispose(bool disposing)

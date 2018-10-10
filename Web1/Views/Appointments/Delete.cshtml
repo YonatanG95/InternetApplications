@@ -17,6 +17,12 @@
 
         <dd>
             @Html.DisplayFor(model => model.Date_Time)
+            @if (TempData["msg"] != null)
+            {
+                <script type="text/javascript">
+                    alert("@TempData["msg"]");
+            </script>
+            }
         </dd>
 
         <dt>

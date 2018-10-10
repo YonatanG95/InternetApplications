@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Web1.Models;
 using Microsoft.AspNet.Identity;
@@ -21,110 +19,63 @@ namespace Web1.Controllers
         // GET: Appointments
         public ActionResult Index()
         {
-            return View(db.Appointments.ToList());
+            if (User.Identity.IsAuthenticated)
+            {
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    return View(db.Appointments.ToList());
+                }
+                else
+                {
+                    return View("AccessDenied");
+                }
+            }
+            else
+            {
+                return View("NotLoggedIn");
+            }
         }
 
         // GET: Appointments/Details/5
         public ActionResult Details(string id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Appointment appointment = db.Appointments.Find(id);
-            if (appointment == null)
-            {
-                return HttpNotFound();
-            }
-            return View(appointment);
-        }
-
-        // GET: Appointments/PatientCreate
-        public ActionResult PatientCreate()
-        {
             if (User.Identity.IsAuthenticated)
             {
-                string id = User.Identity.GetUserId();
-                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
-                var roles = userManager.GetRoles(User.Identity.GetUserId());
-                if (roles[0] == "Patient")
+                if (id == null)
                 {
-                    return View();
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                else
+                Appointment appointment = db.Appointments.Find(id);
+                if (appointment == null)
                 {
-                    // A doctor shouldn't be able to reach this page at all, throw an error at him
-                    return View("Error");
+                    return HttpNotFound();
                 }
-            } 
-            else
-            {
-                return View("NotLoggedIn");
-            }
-
-        }
-
-        // POST: Appointments/PatientCreate
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult PatientCreate([Bind(Include = "ID,Date_Time,IsAvaliable,Doctor_ID,Patient_ID")] Appointment appointment)
-        {
-            if (ModelState.IsValid)
-            {
-                appointment.Patient_ID = User.Identity.GetUserId();
-                appointment.Patient = db.Patients.Find(appointment.Patient_ID);
-                db.Appointments.Add(appointment);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(appointment);
-        }
-
-        // GET: Appointments/DoctorCreate
-        public ActionResult DoctorCreate()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                string id = User.Identity.GetUserId();
+                string cid = User.Identity.GetUserId();
                 UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
-                var roles = userManager.GetRoles(User.Identity.GetUserId());
+                var roles = userManager.GetRoles(cid);
                 if (roles[0] == "Doctor")
                 {
-                    return View();
+                    return View(appointment);
                 }
                 else
                 {
-                    // A patient shouldn't be able to reach this page at all, throw an error at him
-                    return View("Error");
+                    if (cid == appointment.Patient_ID)
+                    {
+                        return View(appointment);
+                    }
+                    else
+                    {
+                        return View("AccessDenied");
+                    }
                 }
             }
             else
             {
                 return View("NotLoggedIn");
             }
-
-        }
-
-        // POST: Appointments/DoctorCreate
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult DoctorCreate([Bind(Include = "ID,Date_Time,IsAvaliable,Doctor_ID,Patient_ID")] Appointment appointment)
-        {
-            if (ModelState.IsValid)
-            {
-                appointment.Doctor_ID = User.Identity.GetUserId();
-                appointment.Doctor = db.Doctors.Find(appointment.Doctor_ID);
-                db.Appointments.Add(appointment);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(appointment);
         }
 
         // GET: Appointments/Create
@@ -132,17 +83,7 @@ namespace Web1.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                string id = User.Identity.GetUserId();
-                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
-                var roles = userManager.GetRoles(User.Identity.GetUserId());
-                if (roles[0] == "Doctor")
-                {
-                    return RedirectToAction("DoctorCreate");
-                }
-                else
-                {
-                    return RedirectToAction("PatientCreate");
-                }
+                return View();
             }
             else
             {
@@ -157,14 +98,25 @@ namespace Web1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Date_Time,IsAvaliable,Doctor_ID,Patient_ID")] Appointment appointment)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                db.Appointments.Add(appointment);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    string cid = User.Identity.GetUserId();
+                    appointment.Patient_ID = cid;
+                    appointment.Patient = db.Patients.Find(cid);
+                    db.Appointments.Add(appointment);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                    
+                }
+                return View(appointment);
             }
-
-            return View(appointment);
+            else
+            {
+                return View("NotLoggedIn");
+            }
+            
         }
 
         // GET: Appointments/Edit/5
@@ -179,7 +131,31 @@ namespace Web1.Controllers
             {
                 return HttpNotFound();
             }
-            return View(appointment);
+            if (User.Identity.IsAuthenticated)
+            {
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    return View(appointment);
+                }
+                else
+                {
+                    if (cid == appointment.Patient_ID)
+                    {
+                        return View(appointment);
+                    }
+                    else
+                    {
+                        return View("AccessDenied");
+                    }
+                }
+            }
+            else
+            {
+                return View("NotLoggedIn");
+            }
         }
 
         // POST: Appointments/Edit/5
@@ -189,28 +165,83 @@ namespace Web1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Date_Time,IsAvaliable,Doctor_ID,Patient_ID")] Appointment appointment)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                db.Entry(appointment).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.Entry(appointment).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    return View(appointment);
+                }
+                else
+                {
+                    if (cid == appointment.Patient_ID)
+                    {
+                        if (ModelState.IsValid)
+                        {
+                            appointment.Patient = db.Patients.Find(cid);
+                            db.Entry(appointment).State = EntityState.Modified;
+                            db.SaveChanges();
+                            return RedirectToAction("Index");
+                        }
+                        return View(appointment);
+                    }
+                    else
+                    {
+                        return View("AccessDenied");
+                    }
+                }
             }
-            return View(appointment);
+            else
+            {
+                return View("NotLoggedIn");
+            }
         }
 
         // GET: Appointments/Delete/5
         public ActionResult Delete(string id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Appointment appointment = db.Appointments.Find(id);
+                if (appointment == null)
+                {
+                    return HttpNotFound();
+                }
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    return View(appointment);
+                }
+                else
+                {
+                    if (cid == appointment.Patient_ID)
+                    {
+                        return View(appointment);
+                    }
+                    else
+                    {
+                        return View("AccessDenied");
+                    }
+                }
             }
-            Appointment appointment = db.Appointments.Find(id);
-            if (appointment == null)
+            else
             {
-                return HttpNotFound();
+                return View("NotLoggedIn");
             }
-            return View(appointment);
         }
 
         // POST: Appointments/Delete/5
@@ -218,10 +249,52 @@ namespace Web1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Appointment appointment = db.Appointments.Find(id);
-            db.Appointments.Remove(appointment);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (User.Identity.IsAuthenticated)
+            {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Appointment appointment = db.Appointments.Find(id);
+                if (appointment == null)
+                {
+                    return HttpNotFound();
+                }
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    db.Appointments.Remove(appointment);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    if (cid == appointment.Patient_ID)
+                    {
+                        if (DateTime.Compare(DateTime.Now, appointment.Date_Time) < 0)
+                        {
+                            db.Appointments.Remove(appointment);
+                            db.SaveChanges();
+                            return RedirectToAction("Index");
+                        }
+                        else
+                        {
+                            TempData["msg"] = "Cannot delete this appointment because it already happened.";
+                            return View(appointment);
+                        }
+                    }
+                    else
+                    {
+                        return View("AccessDenied");
+                    }
+                }
+            }
+            else
+            {
+                return View("NotLoggedIn");
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -245,6 +318,43 @@ namespace Web1.Controllers
                 }
             }
             return "not booked";
+        }
+
+        // GET: Appointments/ShowUserAppointments
+        public ActionResult ShowUserAppointments()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                List<Appointment> appointments = new List<Appointment>();
+                string cid = User.Identity.GetUserId();
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
+                var roles = userManager.GetRoles(cid);
+                if (roles[0] == "Doctor")
+                {
+                    foreach (Appointment appointment in db.Appointments.ToList())
+                    {
+                        if (cid == appointment.Doctor_ID)
+                        {
+                            appointments.Add(appointment);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (Appointment appointment in db.Appointments.ToList())
+                    {
+                        if (cid == appointment.Patient_ID)
+                        {
+                            appointments.Add(appointment);
+                        }
+                    }
+                }
+                return View(appointments);
+            }
+            else
+            {
+                return View("NotLoggedIn");
+            }
         }
     }
 }
