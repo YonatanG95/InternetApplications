@@ -29,3 +29,50 @@
         <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
 </div>
+
+<script>
+    var url = 'https://newsapi.org/v2/everything?' +
+        'q=Medication&' +
+        'sortBy=popularity&' +
+        'apiKey=5af78b4fcd364c32b0e7854198c7b717';
+
+    var req = new Request(url);
+
+    fetch(req)
+        .then(function (response) {
+            console.log(response.json());
+        })
+</script>
+
+<head>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdn.rawgit.com/olifolkerd/tabulator/master/tabulator.css">
+    <script type="text/javascript" src="https://cdn.rawgit.com/olifolkerd/tabulator/master/tabulator.js"></script>
+</head>
+<body>
+    <div id="example-table"></div>
+</body>
+
+<script>
+    $("#example-table").tabulator({
+        height: "300px",
+        fitColumns: true,
+        movableCols: true,
+        movableRows: true,
+        tooltips: true,
+        columns: [
+            {
+                title: "author", field: "author", sorter: "string", editable: true
+            },
+            { title: "content", field: "content", sorter: "string", editable: true },
+            { title: "Gender", field: "gender", width: 100, sorter: "string", editable: true },
+            { title: "Rating", field: "rating", formatter: "star", align: "center", sorter: "number", width: 100, editable: true },
+            { title: "Favourite Color", field: "col", width: 120, sorter: "string", sortable: false, editable: true },
+            { title: "Date Of Birth", field: "dob", width: 130, sorter: "date", align: "center" },
+            { title: "Driver", field: "car", width: 80, align: "center", formatter: "tickCross", sorter: "boolean", editable: true },
+        ],
+    });
+</script>
+<!--chnage to this  https://github.com/alfajango/jquery-dynatable -->
