@@ -2,6 +2,13 @@
     ViewBag.Title = "Home Page";
 }
 
+
+<div class="wrapper">
+    <p class="top">Free news API for Developers</p>
+    <h1><a href="https://newsapi.org/">www.newsapi.org</a></h1>
+</div>
+
+
 <div class="jumbotron">
     <h1>ASP.NET</h1>
     <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
@@ -30,49 +37,131 @@
     </div>
 </div>
 
-<script>
-    var url = 'https://newsapi.org/v2/everything?' +
-        'q=Medication&' +
-        'sortBy=popularity&' +
-        'apiKey=5af78b4fcd364c32b0e7854198c7b717';
-
-    var req = new Request(url);
-
-    fetch(req)
-        .then(function (response) {
-            console.log(response.json());
-        })
-</script>
-
-<head>
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
-
-    <link rel="stylesheet" href="https://cdn.rawgit.com/olifolkerd/tabulator/master/tabulator.css">
-    <script type="text/javascript" src="https://cdn.rawgit.com/olifolkerd/tabulator/master/tabulator.js"></script>
-</head>
-<body>
-    <div id="example-table"></div>
-</body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 <script>
-    $("#example-table").tabulator({
-        height: "300px",
-        fitColumns: true,
-        movableCols: true,
-        movableRows: true,
-        tooltips: true,
-        columns: [
-            {
-                title: "author", field: "author", sorter: "string", editable: true
-            },
-            { title: "content", field: "content", sorter: "string", editable: true },
-            { title: "Gender", field: "gender", width: 100, sorter: "string", editable: true },
-            { title: "Rating", field: "rating", formatter: "star", align: "center", sorter: "number", width: 100, editable: true },
-            { title: "Favourite Color", field: "col", width: 120, sorter: "string", sortable: false, editable: true },
-            { title: "Date Of Birth", field: "dob", width: 130, sorter: "date", align: "center" },
-            { title: "Driver", field: "car", width: 80, align: "center", formatter: "tickCross", sorter: "boolean", editable: true },
-        ],
+    $.ajax({
+        url:
+            "https://newsapi.org/v2/everything?q=Medication&sortBy=popularity&apiKey=5af78b4fcd364c32b0e7854198c7b717",
+        method: "GET",
+        error: function () {
+            console.log("lol");
+        },
+        success: function (data) {
+            processData(data);
+        }
     });
+
+
+    function processData(data) {
+        var articleItems = [];
+
+        for (var i = 0; i < data.articles.length; i++) {
+            var author = data.articles[i].author;
+            var title = data.articles[i].title;
+            var description = data.articles[i].description;
+            var artUrl = data.articles[i].url;
+
+            var $author = $('<div class="author">Author: ' + author + "</div >");
+            var $title = $(
+                "<a href=" + artUrl + '><div class="title">' + title + "</div ></a>"
+            );
+            var $description = $(
+                "<a href=" +
+                artUrl +
+                '><div class="description">' +
+                description +
+                "</div ></a>"
+            );
+
+            $(".wrapper").append($author, $title, $description);
+            console.log(artUrl);
+        }
+    }
+
 </script>
-<!--chnage to this  https://github.com/alfajango/jquery-dynatable -->
+
+body, html {
+  background: #EECDA3; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to top,
+    #EF629F,
+    #EECDA3
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to top,
+    #EF629F,
+    #EECDA3
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  color: blueviolet;
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+  display: block;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.top {
+  color: blue;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+h1 {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+  color: blue;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 70%;
+  margin: auto;
+  background: rgba(0, 0, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 15px;
+}
+
+.author {
+  margin-bottom: 20px;
+}
+
+.title {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  color: green;
+  font-style: italic;
+}
+.description {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  color: #9c27b0;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  border-radius: 5px;
+}
+
+.title, .description {
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  transition-duration: 0.3s;
+}
+
+.description:hover, .title:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+
+
+
