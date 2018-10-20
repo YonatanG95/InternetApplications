@@ -18,7 +18,8 @@ namespace Web1.Controllers
 
         // GET: Patients
         public ActionResult Index()
-        {            
+        {
+            
             if (User.Identity.IsAuthenticated)
             {
                 string cid = User.Identity.GetUserId();
@@ -37,7 +38,7 @@ namespace Web1.Controllers
             {
                 return View("NotLoggedIn");
             }
-            return View(db.Patients.ToList());
+            
         }
 
         // GET: Patients/Details/5
