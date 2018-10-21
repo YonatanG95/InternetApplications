@@ -8,7 +8,7 @@ namespace Web1.DAL
 {
     // Change DropCreateDatabaseIfModelChanges to DropCreateDatabaseAlways if you want to force the Seed function to trigger
     // You need to close the connection to the db if the db is currently in use error pops up, you do that by right clicking the db in server explorer>Close connection
-    public class DBInit : System.Data.Entity.DropCreateDatabaseAlways<WebContext>
+    public class DBInit : System.Data.Entity.DropCreateDatabaseIfModelChanges<WebContext>
     {
         protected override void Seed(WebContext context)
         {
