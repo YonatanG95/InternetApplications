@@ -15,11 +15,11 @@ namespace Web1.Controllers
     {
         private WebContext db = new WebContext();
         private ApplicationDbContext appDb = new ApplicationDbContext();
-
+        
         // GET: Patients
         public ActionResult Index()
         {
-            return View(db.Patients.ToList());
+                        
             if (User.Identity.IsAuthenticated)
             {
                 string cid = User.Identity.GetUserId();

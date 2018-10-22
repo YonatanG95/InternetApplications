@@ -8,7 +8,7 @@ namespace Web1.DAL
 {
     // Change DropCreateDatabaseIfModelChanges to DropCreateDatabaseAlways if you want to force the Seed function to trigger
     // You need to close the connection to the db if the db is currently in use error pops up, you do that by right clicking the db in server explorer>Close connection
-    public class DBInit : System.Data.Entity.DropCreateDatabaseAlways<WebContext>
+    public class DBInit : System.Data.Entity.DropCreateDatabaseIfModelChanges<WebContext>
     {
         protected override void Seed(WebContext context)
         {
@@ -39,6 +39,14 @@ namespace Web1.DAL
             checkups.ForEach(c => context.Checkups.Add(c));
             context.SaveChanges();
 
+            //Initialize patients
+            var appointments = new List<Appointment>
+            {
+                new Appointment{ID="10",Date_Time=(System.DateTime.Now), IsAvaliable=true, Doctor_ID="123456123", Patient_ID="444444123"},
+                new Appointment{ID="11",Date_Time=(System.DateTime.Now), IsAvaliable=true, Doctor_ID="987654321", Patient_ID="123456789"}
+            };
+            appointments.ForEach(p => context.Appointments.Add(p));
+            context.SaveChanges();
 
             // Changes related to account management
             ApplicationDbContext appContext = new ApplicationDbContext();
