@@ -13,7 +13,8 @@
     @using (Html.BeginForm())
     {
         <p>
-            Filter: name: @Html.TextBox("fname") last-name: @Html.TextBox("lname")  age: @Html.TextBox("age")
+            <h6>Filter:</h6>
+            name: @Html.TextBox("fname") last-name: @Html.TextBox("lname")  age: @Html.TextBox("age")
             <input type="submit" value="Search" />
         </p>
     }
