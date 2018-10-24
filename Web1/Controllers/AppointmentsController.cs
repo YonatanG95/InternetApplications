@@ -20,7 +20,7 @@ namespace Web1.Controllers
         private ApplicationDbContext appDb = new ApplicationDbContext();
 
         // GET: Appointments
-        public ActionResult Index()
+        public ActionResult Index(string docID, string patID)
         {
             
             if (User.Identity.IsAuthenticated)
@@ -30,7 +30,22 @@ namespace Web1.Controllers
                 var roles = userManager.GetRoles(cid);
                 if (roles[0] == "Doctor")
                 {
-                    return View(db.Appointments.ToList());
+                    var apps = from a in db.Appointments
+                               select a;
+                    if (!String.IsNullOrEmpty(docID))
+                    {
+                        apps = apps.Where(s => s.Doctor_ID.Contains(docID));
+                    }
+                    if (!String.IsNullOrEmpty(patID))
+                    {
+                        apps = apps.Where(s => s.Patient_ID.Contains(patID));
+                    }
+                    //if (!String.IsNullOrEmpty(dateTime))
+                    //{
+                    //    int ageInt = Int32.Parse(dateTime);
+                    //    apps = patients.Where(s => s.Date_Time == dateTime);
+                    //}
+                    return View(apps.ToList());
                 }
                 else
                 {
