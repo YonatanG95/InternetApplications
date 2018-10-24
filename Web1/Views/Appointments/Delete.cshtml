@@ -12,6 +12,13 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
+            @Html.DisplayNameFor(model => model.ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ID)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.Date_Time)
         </dt>
 
@@ -21,17 +28,17 @@
             {
                 <script type="text/javascript">
                     alert("@TempData["msg"]");
-            </script>
+                </script>
             }
         </dd>
 
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.IsAvaliable)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.IsAvaliable)
-        </dd>
+        </dd>*@
 
         <dt>
             @Html.DisplayNameFor(model => model.Doctor_ID)

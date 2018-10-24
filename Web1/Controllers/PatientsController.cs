@@ -130,7 +130,7 @@ namespace Web1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,FirstName,LastName,Age,Longitude,Latitude,City,Address,Zip")] Patient patient)
+        public ActionResult Create([Bind(Include = "ID,FirstName,LastName,Age,Gender,Longitude,Latitude,City,Address")] Patient patient)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -209,7 +209,7 @@ namespace Web1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,FirstName,LastName,Age,Longitude,Latitude,City,Address,Zip")] Patient patient)
+        public ActionResult Edit([Bind(Include = "ID,FirstName,LastName,Age,Gender,Longitude,Latitude,City,Address")] Patient patient)
         {
             if (User.Identity.IsAuthenticated)
             {

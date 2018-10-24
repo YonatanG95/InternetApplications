@@ -259,7 +259,7 @@ namespace Web1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Type,Result,Doctor_ID,Patient_ID")] Checkup checkup)
+        public ActionResult Create([Bind(Include = "ID,Type,Result,Patient_ID")] Checkup checkup)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -325,7 +325,7 @@ namespace Web1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Type,Result,Doctor_ID,Patient_ID")] Checkup checkup)
+        public ActionResult Edit([Bind(Include = "ID,Type,Result,Patient_ID")] Checkup checkup)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -442,13 +442,13 @@ namespace Web1.Controllers
                 var roles = userManager.GetRoles(cid);
                 if (roles[0] == "Doctor")
                 {
-                    foreach (Checkup checkup in db.Checkups.ToList())
-                    {
-                        if (cid == checkup.Doctor_ID)
-                        {
-                            checkups.Add(checkup);
-                        }
-                    }
+                    //foreach (Checkup checkup in db.Checkups.ToList())
+                    //{
+                    //    if (cid == checkup.Doctor_ID)
+                    //    {
+                    //        checkups.Add(checkup);
+                    //    }
+                    //}
                 }
                 else
                 {

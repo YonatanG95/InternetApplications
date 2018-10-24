@@ -99,7 +99,7 @@ namespace Web1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Password,FirstName,LastName,Specialization")] Doctor doctor)
+        public ActionResult Create([Bind(Include = "ID,FirstName,LastName,Specialization")] Doctor doctor)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -165,7 +165,7 @@ namespace Web1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Password,FirstName,LastName,Specialization")] Doctor doctor)
+        public ActionResult Edit([Bind(Include = "ID,FirstName,LastName,Specialization")] Doctor doctor)
         {
             if (User.Identity.IsAuthenticated)
             {

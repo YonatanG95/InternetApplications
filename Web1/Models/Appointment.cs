@@ -11,7 +11,7 @@ namespace Web1.Models
 
         public System.DateTime Date_Time { get; set; }
 
-        public bool IsAvaliable { get; set; }
+        //public bool IsAvaliable { get; set; }
 
         public string Doctor_ID { get; set; }
 
