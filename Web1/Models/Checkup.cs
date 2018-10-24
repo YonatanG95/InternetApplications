@@ -14,12 +14,12 @@ namespace Web1.Models
 
         public bool Result { get; set; }
 
-        public string Doctor_ID { get; set; }
+        //public string Doctor_ID { get; set; }
 
         public string Patient_ID { get; set; }
 
         public virtual Patient Patient { get; set; }
 
-        public virtual Doctor Doctor { get; set; }
+        //public virtual Doctor Doctor { get; set; }
     }
 }

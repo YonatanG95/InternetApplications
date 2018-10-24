@@ -15,7 +15,7 @@ namespace Web1.Models
         public double Latitude { get; set; }
         public string City { get; set; }
         public string Address { get; set; }
-        public string Zip { get; set; }
+        public string Gender { get; set; }
 
         public virtual ICollection<Appointments> Appointments { get; set; }
         public virtual ICollection<Checkups> Checkups { get; set; }
