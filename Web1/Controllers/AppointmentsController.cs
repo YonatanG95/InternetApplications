@@ -7,6 +7,9 @@ using System.Web.Mvc;
 using Web1.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Accord.MachineLearning;
+using Accord.Imaging;
+using Accord.Math.Distances;
 
 
 namespace Web1.Controllers
@@ -19,6 +22,7 @@ namespace Web1.Controllers
         // GET: Appointments
         public ActionResult Index()
         {
+            
             if (User.Identity.IsAuthenticated)
             {
                 string cid = User.Identity.GetUserId();
@@ -39,6 +43,136 @@ namespace Web1.Controllers
             }
         }
 
+        public int RecommendedDoctorsByAge()
+        {
+            int amirCounter = 0, inonCounter = 0, orCounter = 0, maayanCounter = 0;
+            // Create some sample learning data. In this data,
+            // the first two instances belong to a class, the
+            // four next belong to another class and the last
+            // three to yet another.
+            List<double[]> inputs = new List<double[]>();
+            List<int> outputs = new List<int>();
+            foreach (Appointment app in db.Appointments.ToList())
+            {
+
+                if (app.Doctor_ID == "123456123")
+                {
+                    amirCounter++;
+                    Patient p = db.Patients.Find(app.Patient_ID);
+                    inputs.Add(new double[] { (p.Age) });
+
+                }
+
+                //Patient p = db.Patients.Find(checkup.Patient_ID);
+
+
+            }
+
+            foreach (Appointment app in db.Appointments.ToList())
+            {
+
+                if (app.Doctor_ID == "987654321")
+                {
+                    inonCounter++;
+                    Patient p = db.Patients.Find(app.Patient_ID);
+                    inputs.Add(new double[] { (p.Age) });
+
+                }
+
+                //Patient p = db.Patients.Find(checkup.Patient_ID);
+
+
+            }
+
+            foreach (Appointment app in db.Appointments.ToList())
+            {
+
+                if (app.Doctor_ID == "543216789")
+                {
+                    orCounter++;
+                    Patient p = db.Patients.Find(app.Patient_ID);
+                    inputs.Add(new double[] { (p.Age) });
+
+                }
+
+                //Patient p = db.Patients.Find(checkup.Patient_ID);
+
+
+            }
+
+            foreach (Appointment app in db.Appointments.ToList())
+            {
+
+                if (app.Doctor_ID == "098765432")
+                {
+                    maayanCounter++;
+                    Patient p = db.Patients.Find(app.Patient_ID);
+                    inputs.Add(new double[] { (p.Age) });
+
+                }
+
+                //Patient p = db.Patients.Find(checkup.Patient_ID);
+
+
+            }
+
+
+            double[][] inputs1 = inputs.ToArray();
+
+
+            // The first two are from class Blood=0
+
+
+            // The next four are from class C.T=1
+
+
+            // The last three are from class MRI=2
+            int totalCounters = amirCounter + inonCounter + orCounter + maayanCounter;
+
+            for (int i = 0; i < totalCounters; i++)
+            {
+                if (amirCounter != 0)
+                {
+                    outputs.Add(0);
+                    amirCounter--;
+
+                }
+                else if (inonCounter != 0)
+                {
+                    outputs.Add(1);
+                    inonCounter--;
+                }
+                else if (orCounter != 0)
+                {
+                    outputs.Add(2);
+                    orCounter--;
+                }
+                else if (maayanCounter != 0)
+                {
+                    outputs.Add(3);
+                    maayanCounter--;
+                }
+
+
+
+            }
+
+            int[] outputs1 = outputs.ToArray();
+
+            // Now we will create the K-Nearest Neighbors algorithm. For this
+            // example, we will be choosing k = 4. This means that, for a given
+            // instance, its nearest 4 neighbors will be used to cast a decision.
+            var knn = new KNearestNeighbors(k: 1, distance: new Manhattan());
+
+
+            // We learn the algorithm:
+            knn.Learn(inputs1, outputs1);
+
+            // After the algorithm has been created, we can classify a new instance:
+            //Enter age here and get doctor by class number
+            int answer = knn.Decide(new double[] { 25 });
+            return answer;
+        }
         // GET: Appointments/Details/5
         public ActionResult Details(string id)
         {
