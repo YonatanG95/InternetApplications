@@ -20,7 +20,7 @@ namespace Web1.Controllers
         // GET: Checkups
         public ActionResult Index()
         {
-            RecommendedLabsbyAge();
+            
             if (User.Identity.IsAuthenticated)
             {
                 string cid = User.Identity.GetUserId();
