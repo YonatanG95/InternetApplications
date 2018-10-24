@@ -39,6 +39,14 @@ namespace Web1.DAL
             checkups.ForEach(c => context.Checkups.Add(c));
             context.SaveChanges();
 
+            //Initialize patients
+            var appointments = new List<Appointment>
+            {
+                new Appointment{ID="10",Date_Time=(System.DateTime.Now), IsAvaliable=true, Doctor_ID="123456123", Patient_ID="444444123"},
+                new Appointment{ID="11",Date_Time=(System.DateTime.Now), IsAvaliable=true, Doctor_ID="987654321", Patient_ID="123456789"}
+            };
+            appointments.ForEach(p => context.Appointments.Add(p));
+            context.SaveChanges();
 
             // Changes related to account management
             ApplicationDbContext appContext = new ApplicationDbContext();
