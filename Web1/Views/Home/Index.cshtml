@@ -2,22 +2,20 @@
     ViewBag.Title = "Home Page";
 }
 
-
-<div class="wrapper">
-    <p class="top">Free news API for Developers</p>
-    <h1><a href="https://newsapi.org/">www.newsapi.org</a></h1>
-</div>
-
 <div class="jumbotron">
     <h1>ClinicCollege</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
 </div>
 
+<div class="column left">
+    <h5>From The News:</h5>
+    <div class="wrapper">
+        <p class="top"></p>
+    </div>
+</div>
 
-<div class="row">
-    <div class="col-md-4">
-        <a class="twitter-timeline" data-width="500" data-height="500" href="https://twitter.com/ClinicCollege?ref_src=twsrc%5Etfw">Tweets by ClinicCollege</a>
+<div class="column right">
+    <div class="row">
+        <a class="twitter-timeline" data-width="400" data-height="500" href="https://twitter.com/ClinicCollege?ref_src=twsrc%5Etfw">Tweets by ClinicCollege</a>
         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
         <a href="https://twitter.com/intent/tweet?screen_name=ClinicCollege&ref_src=twsrc%5Etfw" class="twitter-mention-button" data-show-count="false">Tweet to @@ClinicCollege</a>
@@ -26,10 +24,9 @@
         <a href="https://twitter.com/ClinicCollege?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @@ClinicCollege</a>
         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     </div>
-    <div class="col-md-4">
-
-    </div>
 </div>
+
+<iframe width="420" height="345" src="https://www.youtube.com/embed/oiyDQUswtSA" frameborder="0" allowfullscreen></iframe>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
@@ -49,110 +46,125 @@
 
     function processData(data) {
         var articleItems = [];
+        if (data.articles.length >= 3) {
+            for (var i = 0; i < 3; i++) {
+                var author = data.articles[i].author;
+                var title = data.articles[i].title;
+                var description = data.articles[i].description;
+                var artUrl = data.articles[i].url;
 
-        for (var i = 0; i < data.articles.length; i++) {
-            var author = data.articles[i].author;
-            var title = data.articles[i].title;
-            var description = data.articles[i].description;
-            var artUrl = data.articles[i].url;
+                var $author = $('<div class="author">Author: ' + author + "</div >");
+                var $title = $(
+                    "<a href=" + artUrl + '><div class="title">' + title + "</div ></a>"
+                );
+                var $description = $(
+                    "<a href=" +
+                    artUrl +
+                    '><div class="description">' +
+                    description +
+                    "</div ></a>"
+                );
 
-            var $author = $('<div class="author">Author: ' + author + "</div >");
-            var $title = $(
-                "<a href=" + artUrl + '><div class="title">' + title + "</div ></a>"
-            );
-            var $description = $(
-                "<a href=" +
-                artUrl +
-                '><div class="description">' +
-                description +
-                "</div ></a>"
-            );
-
-            $(".wrapper").append($author, $title, $description);
-            console.log(artUrl);
+                $(".wrapper").append($author, $title, $description);
+                console.log(artUrl);
+            }
         }
     }
 
 </script>
 
-body, html {
-  background: #EECDA3; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to top,
-    #EF629F,
-    #EECDA3
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to top,
-    #EF629F,
-    #EECDA3
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+<style>
+    /*body, html {
+        background: #EECDA3; /* fallback for old browsers */
+    background: -webkit-linear-gradient( to top, #EF629F, #EECDA3 ); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient( to top, #EF629F, #EECDA3 ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: blueviolet;
+    text-align: center;
+    }
 
-  color: blueviolet;
-  text-align: center;
-}
+    */
+    /*a {
+        text-decoration: none;
+        display: block;
+    }
 
-a {
-  text-decoration: none;
-  display: block;
-}
+    * {
+        box-sizing: border-box;
+    }
 
-* {
-  box-sizing: border-box;
-}
+    .top {
+        color: blue;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    }
 
-.top {
-  color: blue;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-}
+    h1 {
+        border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+        margin-bottom: 30px;
+        padding-bottom: 30px;
+        color: blue;
+    }*/
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        max-width: 70%;
+        margin: auto;
+        background: rgba(0, 0, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 15px;
+    }
 
-h1 {
-  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
-  margin-bottom: 30px;
-  padding-bottom: 30px;
-  color: blue;
-}
+    .author {
+        margin-bottom: 7px;
+    }
 
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  max-width: 70%;
-  margin: auto;
-  background: rgba(0, 0, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 15px;
-}
+    .title {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 1.2em;
+        margin-bottom: 7px;
+        color: green;
+        font-style: italic;
+    }
 
-.author {
-  margin-bottom: 20px;
-}
+    .description {
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        color: #9c27b0;
+        margin-bottom: 7px;
+        padding-bottom: 7px;
+        padding-top: 7px;
+        border-radius: 5px;
+    }
 
-.title {
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 1.2em;
-  margin-bottom: 20px;
-  color: green;
-  font-style: italic;
-}
-.description {
-  font-family: Georgia, 'Times New Roman', Times, serif;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  color: #9c27b0;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  padding-top: 20px;
-  border-radius: 5px;
-}
+    .title, .description {
+        padding-right: 20px;
+        padding-left: 20px;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        transition-duration: 0.3s;
+    }
 
-.title, .description {
-  padding-right: 20px;
-  padding-left: 20px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  transition-duration: 0.3s;
-}
+        .description:hover, .title:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
 
-.description:hover, .title:hover {
-  background: rgba(0, 0, 0, 0.1);
-}
+    .newspaper {
+        -webkit-column-count: 3; /* Chrome, Safari, Opera */
+        -moz-column-count: 3; /* Firefox */
+        column-count: 3;
+        -webkit-column-gap: 40px; /* Chrome, Safari, Opera */
+        -moz-column-gap: 40px; /* Firefox */
+        column-gap: 40px;
+    }
 
+    .column {
+        float: left;
+    }
+
+    .left {
+        width: 70%;
+    }
+
+    .right {
+        width: 30%;
+    }
+</style>

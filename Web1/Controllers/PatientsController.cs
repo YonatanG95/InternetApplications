@@ -8,6 +8,7 @@ using Web1.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Threading.Tasks;
+using System;
 
 namespace Web1.Controllers
 {
@@ -17,9 +18,8 @@ namespace Web1.Controllers
         private ApplicationDbContext appDb = new ApplicationDbContext();
         
         // GET: Patients
-        public ActionResult Index()
+        public ActionResult Index(string fname, string lname, string age)
         {
-                        
             if (User.Identity.IsAuthenticated)
             {
                 string cid = User.Identity.GetUserId();
@@ -27,7 +27,23 @@ namespace Web1.Controllers
                 var roles = userManager.GetRoles(cid);
                 if (roles[0] == "Doctor")
                 {
-                    return View(db.Patients.ToList());
+                    //return View(db.Patients.ToList());
+                    var patients = from p in db.Patients
+                                   select p;
+                    if (!String.IsNullOrEmpty(fname))
+                    {
+                        patients = patients.Where(s => s.FirstName.Contains(fname));
+                    }
+                    if (!String.IsNullOrEmpty(lname))
+                    {
+                        patients = patients.Where(s => s.LastName.Contains(lname));
+                    }
+                    if (!String.IsNullOrEmpty(age))
+                    {
+                        int ageInt = Int32.Parse(age);
+                        patients = patients.Where(s => s.Age == ageInt);
+                    }
+                    return View(patients.ToList());
                 }
                 else
                 {
