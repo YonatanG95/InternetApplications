@@ -110,10 +110,10 @@
                 //alert(getAge);
             //}
             //else {
-        var url = '@Url.Action("RecommendedLabsbyAge", "Patients")';
+        var url = '@Url.Action("RecommendedCheckupbyAge", "Patients")';
         $.post(url, { age: getAge }, function (data) {
             //alert(data);
-            document.getElementById("recLab").innerHTML = "Recommended lab for your age is: " + data;
+            document.getElementById("recLab").innerHTML = "Recommended checkup for your age is: " + data;
             });
 
             @*var datetime = $("#model.Date_Time").val();

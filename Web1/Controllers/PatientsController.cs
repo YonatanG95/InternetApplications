@@ -430,7 +430,7 @@ namespace Web1.Controllers
 
         }
 
-        [HttpPost, ActionName("RecommendedLabsbyAge")]
+        [HttpPost, ActionName("RecommendedCheckupbyAge")]
         public int RecommendedLabsbyAge(int age)
         {
             int bloodCounter = 0, ctCounter = 0, MRICounter = 0, fecesCounter = 0, urineCounter = 0;
