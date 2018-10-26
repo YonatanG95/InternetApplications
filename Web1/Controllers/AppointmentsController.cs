@@ -60,30 +60,44 @@ namespace Web1.Controllers
 
         public int RecommendedDoctorsByAge()
         {
-            int amirCounter = 0, inonCounter = 0, orCounter = 0, maayanCounter = 0;
+            
+            //int amirCounter = 0, inonCounter = 0, orCounter = 0, maayanCounter = 0;
             // Create some sample learning data. In this data,
             // the first two instances belong to a class, the
             // four next belong to another class and the last
             // three to yet another.
             List<double[]> inputs = new List<double[]>();
             List<int> outputs = new List<int>();
-            foreach (Appointment app in db.Appointments.ToList())
-            {
+            List<int> countersdoctors = new List<int>();
+            int classcounter = 0;
 
-                if (app.Doctor_ID == "123456123")
+            
+
+            foreach (Doctor doctor in db.Doctors.ToList())
+            {
+                
+                foreach (Appointment app in db.Appointments.ToList())
                 {
-                    amirCounter++;
-                    Patient p = db.Patients.Find(app.Patient_ID);
-                    inputs.Add(new double[] { (p.Age) });
+                    
+                    if (app.Doctor_ID == doctor.ID)
+                    {
+                        
+                        outputs.Add(classcounter);
+                        //amirCounter++;
+                        Patient p = db.Patients.Find(app.Patient_ID);
+                        inputs.Add(new double[] { (p.Age) });
+
+                    }
 
                 }
 
+                classcounter++;
                 //Patient p = db.Patients.Find(checkup.Patient_ID);
 
 
             }
 
-            foreach (Appointment app in db.Appointments.ToList())
+          /*  foreach (Appointment app in db.Appointments.ToList())
             {
 
                 if (app.Doctor_ID == "987654321")
@@ -129,7 +143,7 @@ namespace Web1.Controllers
                 //Patient p = db.Patients.Find(checkup.Patient_ID);
 
 
-            }
+            }*/
 
 
             double[][] inputs1 = inputs.ToArray();
@@ -142,7 +156,7 @@ namespace Web1.Controllers
 
 
             // The last three are from class MRI=2
-            int totalCounters = amirCounter + inonCounter + orCounter + maayanCounter;
+            /*int totalCounters = amirCounter + inonCounter + orCounter + maayanCounter;
 
             for (int i = 0; i < totalCounters; i++)
             {
@@ -170,7 +184,7 @@ namespace Web1.Controllers
 
 
 
-            }
+            }*/
 
             int[] outputs1 = outputs.ToArray();
 

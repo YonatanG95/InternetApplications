@@ -4,16 +4,20 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 
+
 namespace Web1.DAL
 {
+    
     // Change DropCreateDatabaseIfModelChanges to DropCreateDatabaseAlways if you want to force the Seed function to trigger
     // You need to close the connection to the db if the db is currently in use error pops up, you do that by right clicking the db in server explorer>Close connection
     public class DBInit : System.Data.Entity.DropCreateDatabaseIfModelChanges<WebContext>
     {
+        
         protected override void Seed(WebContext context)
         {
+
             //Initialize doctors
-            var doctors = new List<Doctor>
+             var doctors = new List<Doctor>
             {
                 new Doctor{ID="123456123", FirstName="Amir", LastName="Mizrahi", Specialization="Ophthalmologist"},
                 new Doctor{ID="987654321", FirstName="Inon", LastName="Weber", Specialization="Neurologist"},
@@ -22,6 +26,7 @@ namespace Web1.DAL
                 new Doctor{ID="456456456", FirstName="Itay", LastName="Menachem", Specialization="Surgeon"},
                 new Doctor{ID="123451234", FirstName="Sharon", LastName="Vaksman", Specialization="Otolaryngologist"}
             };
+            
             doctors.ForEach(d => context.Doctors.Add(d));
             context.SaveChanges();
 

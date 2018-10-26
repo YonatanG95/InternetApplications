@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Web1.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 
 
 namespace Web1.Controllers
@@ -14,10 +15,12 @@ namespace Web1.Controllers
     {
         private WebContext db = new WebContext();
         private ApplicationDbContext appDb = new ApplicationDbContext();
-
+        
+        
         // GET: Doctors
         public ActionResult Index()
         {
+           
             if (User.Identity.IsAuthenticated)
             {
                 string cid = User.Identity.GetUserId();
@@ -41,6 +44,7 @@ namespace Web1.Controllers
         // GET: Doctors/Details/5
         public ActionResult Details(string id)
         {
+
             if (User.Identity.IsAuthenticated)
             {
                 string cid = User.Identity.GetUserId();
@@ -81,6 +85,7 @@ namespace Web1.Controllers
                 var roles = userManager.GetRoles(cid);
                 if (roles[0] == "Doctor")
                 {
+                   
                     return View();
                 }
                 else
@@ -94,13 +99,16 @@ namespace Web1.Controllers
             }
         }
 
-        // POST: Doctors/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        
+
+       // POST: Doctors/Create
+       // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+       // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+       [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,FirstName,LastName,Specialization")] Doctor doctor)
         {
+
             if (User.Identity.IsAuthenticated)
             {
                 string cid = User.Identity.GetUserId();
@@ -110,6 +118,7 @@ namespace Web1.Controllers
                 {
                     if (ModelState.IsValid)
                     {
+                        
                         db.Doctors.Add(doctor);
                         db.SaveChanges();
                         return RedirectToAction("Index");

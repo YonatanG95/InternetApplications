@@ -23,8 +23,10 @@ namespace Web1.Controllers
         // GET: Patients
         public ActionResult Index(string fname, string lname, string age)
         {
+            
             if (User.Identity.IsAuthenticated)
             {
+                
                 string cid = User.Identity.GetUserId();
                 UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
                 var roles = userManager.GetRoles(cid);
@@ -433,31 +435,47 @@ namespace Web1.Controllers
         [HttpPost, ActionName("RecommendedCheckupbyAge")]
         public int RecommendedLabsbyAge(int age)
         {
-            int bloodCounter = 0, ctCounter = 0, MRICounter = 0, fecesCounter = 0, urineCounter = 0;
+            //int bloodCounter = 0, ctCounter = 0, MRICounter = 0, fecesCounter = 0, urineCounter = 0;
             // Create some sample learning data. In this data,
             // the first two instances belong to a class, the
             // four next belong to another class and the last
             // three to yet another.
             List<double[]> inputs = new List<double[]>();
             List<int> outputs = new List<int>();
+            List<string> types = new List<string>();
+            int classcounter=0;
             foreach (Checkup checkup in db.Checkups.ToList())
             {
-                if (checkup.Result)
+                if (!types.Contains(checkup.Type))
                 {
-                    if (checkup.Type == "Blood")
+                    types.Add(checkup.Type);
+                }
+
+            }
+            foreach (string type in types)
+            {
+
+                foreach (Checkup checkup in db.Checkups.ToList())
+                {
+                    if (checkup.Result)
                     {
-                        bloodCounter++;
-                        Patient p = db.Patients.Find(checkup.Patient_ID);
-                        inputs.Add(new double[] { (p.Age) });
+                        if (checkup.Type == type)
+                        {
+                            outputs.Add(classcounter);
+                            Patient p = db.Patients.Find(checkup.Patient_ID);
+                            inputs.Add(new double[] { (p.Age) });
+
+                        }
+
+                        //Patient p = db.Patients.Find(checkup.Patient_ID);
+
 
                     }
-
-                    //Patient p = db.Patients.Find(checkup.Patient_ID);
-
-
+                   
                 }
+                classcounter++;
             }
-            foreach (Checkup checkup in db.Checkups.ToList())
+            /*foreach (Checkup checkup in db.Checkups.ToList())
             {
                 if (checkup.Result)
                 {
@@ -521,7 +539,7 @@ namespace Web1.Controllers
 
 
                 }
-            }
+            }*/
             double[][] inputs1 = inputs.ToArray();
 
 
@@ -532,7 +550,7 @@ namespace Web1.Controllers
 
 
             // The last three are from class MRI=2
-            int totalCounters = bloodCounter + ctCounter + MRICounter + fecesCounter + urineCounter;
+            /*int totalCounters = bloodCounter + ctCounter + MRICounter + fecesCounter + urineCounter;
 
             for (int i = 0; i < totalCounters; i++)
             {
@@ -564,7 +582,7 @@ namespace Web1.Controllers
                 }
 
 
-            }
+            }*/
 
             int[] outputs1 = outputs.ToArray();
 
