@@ -4,94 +4,130 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<body onload="recommendedLab()">
+    <h2>Details</h2>
 
-<div>
-    <h4>Patient</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ID)
-        </dt>
+    <div>
+        <h4>Patient</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.ID)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ID)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ID)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.FirstName)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.LastName)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Age)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Age)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Age)
-        </dd>
+            <dd id="pAge">
+                @Html.DisplayFor(model => model.Age)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Gender)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Gender)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Gender)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Gender)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Longitude)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Longitude)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Longitude)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Longitude)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Latitude)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Latitude)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Latitude)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Latitude)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.City)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.City)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.City)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Address)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Address)
+            </dd>
 
-        @*<dt>
-            @Html.DisplayNameFor(model => model.Zip)
-        </dt>*@
+            @*<dt>
+                    @Html.DisplayNameFor("Nothing")
+                </dt>*@
 
-        @*<dd>
-            @Html.DisplayFor(model => model.Zip)
-        </dd>*@
+            @*<dt>
+                    @Html.DisplayNameFor(model => model.Zip)
+                </dt>*@
 
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+            @*<dd>
+                    @Html.DisplayFor(model => model.Zip)
+                </dd>*@
+
+        </dl>
+    </div>
+    <h6 id="recLab">text</h6>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+<script type="text/javascript">
+    function recommendedLab() {
+        var getAge = document.getElementById("pAge").innerHTML;// $('#pAge');
+            //if (doctor.val() == null || doctor.val() == '') {
+            //    $(date).val(null);
+                //alert(getAge);
+            //}
+            //else {
+        var url = '@Url.Action("RecommendedLabsbyAge", "Patients")';
+        $.post(url, { age: getAge }, function (data) {
+            //alert(data);
+            document.getElementById("recLab").innerHTML = "Recommended lab for your age is: " + data;
+            });
+
+            @*var datetime = $("#model.Date_Time").val();
+            var doctorid = $('#doctorid');
+            doctorid.empty();*@
+        }
+        @*jQuery.validator.addMethod("gregname", function (value, element) {
+            return true;
+        }, "* Amount must be greater than zero");
+        $('#doctorid').validate({
+            rules: {
+                doctorid: {
+                    gregname: true
+                }
+            }
+        });*@
+</script>

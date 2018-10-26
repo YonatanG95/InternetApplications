@@ -9,6 +9,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Threading.Tasks;
 using System;
+using Accord.MachineLearning;
+using Accord.Imaging;
+using Accord.Math.Distances;
 
 namespace Web1.Controllers
 {
@@ -425,6 +428,158 @@ namespace Web1.Controllers
                 return View("NotLoggedIn");
             }
 
+        }
+
+        [HttpPost, ActionName("RecommendedLabsbyAge")]
+        public int RecommendedLabsbyAge(int age)
+        {
+            int bloodCounter = 0, ctCounter = 0, MRICounter = 0, fecesCounter = 0, urineCounter = 0;
+            // Create some sample learning data. In this data,
+            // the first two instances belong to a class, the
+            // four next belong to another class and the last
+            // three to yet another.
+            List<double[]> inputs = new List<double[]>();
+            List<int> outputs = new List<int>();
+            foreach (Checkup checkup in db.Checkups.ToList())
+            {
+                if (checkup.Result)
+                {
+                    if (checkup.Type == "Blood")
+                    {
+                        bloodCounter++;
+                        Patient p = db.Patients.Find(checkup.Patient_ID);
+                        inputs.Add(new double[] { (p.Age) });
+
+                    }
+
+                    //Patient p = db.Patients.Find(checkup.Patient_ID);
+
+
+                }
+            }
+            foreach (Checkup checkup in db.Checkups.ToList())
+            {
+                if (checkup.Result)
+                {
+                    if (checkup.Type == "C.T")
+                    {
+                        ctCounter++;
+                        Patient p = db.Patients.Find(checkup.Patient_ID);
+                        inputs.Add(new double[] { (p.Age) });
+                    }
+
+                    //Patient p = db.Patients.Find(checkup.Patient_ID);
+
+
+                }
+            }
+            foreach (Checkup checkup in db.Checkups.ToList())
+            {
+                if (checkup.Result)
+                {
+                    if (checkup.Type == "MRI")
+                    {
+                        MRICounter++;
+                        Patient p = db.Patients.Find(checkup.Patient_ID);
+                        inputs.Add(new double[] { (p.Age) });
+                    }
+
+                    //Patient p = db.Patients.Find(checkup.Patient_ID);
+
+
+                }
+            }
+            foreach (Checkup checkup in db.Checkups.ToList())
+            {
+                if (checkup.Result)
+                {
+                    if (checkup.Type == "Feces")
+                    {
+                        fecesCounter++;
+                        Patient p = db.Patients.Find(checkup.Patient_ID);
+                        inputs.Add(new double[] { (p.Age) });
+                    }
+
+                    //Patient p = db.Patients.Find(checkup.Patient_ID);
+
+
+                }
+            }
+
+            foreach (Checkup checkup in db.Checkups.ToList())
+            {
+                if (checkup.Result)
+                {
+                    if (checkup.Type == "Urine")
+                    {
+                        urineCounter++;
+                        Patient p = db.Patients.Find(checkup.Patient_ID);
+                        inputs.Add(new double[] { (p.Age) });
+                    }
+
+                    //Patient p = db.Patients.Find(checkup.Patient_ID);
+
+
+                }
+            }
+            double[][] inputs1 = inputs.ToArray();
+
+
+            // The first two are from class Blood=0
+
+
+            // The next four are from class C.T=1
+
+
+            // The last three are from class MRI=2
+            int totalCounters = bloodCounter + ctCounter + MRICounter + fecesCounter + urineCounter;
+
+            for (int i = 0; i < totalCounters; i++)
+            {
+                if (bloodCounter != 0)
+                {
+                    outputs.Add(0);
+                    bloodCounter--;
+
+                }
+                else if (ctCounter != 0)
+                {
+                    outputs.Add(1);
+                    ctCounter--;
+                }
+                else if (MRICounter != 0)
+                {
+                    outputs.Add(2);
+                    MRICounter--;
+                }
+                else if (fecesCounter != 0)
+                {
+                    outputs.Add(3);
+                    fecesCounter--;
+                }
+                else if (urineCounter != 0)
+                {
+                    outputs.Add(4);
+                    urineCounter--;
+                }
+
+
+            }
+
+            int[] outputs1 = outputs.ToArray();
+
+            // Now we will create the K-Nearest Neighbors algorithm. For this
+            // example, we will be choosing k = 4. This means that, for a given
+            // instance, its nearest 4 neighbors will be used to cast a decision.
+            var knn = new KNearestNeighbors(k: 1, distance: new Manhattan());
+
+
+            // We learn the algorithm:
+            knn.Learn(inputs1, outputs1);
+
+            // After the algorithm has been created, we can classify a new instance:
+            int answer = knn.Decide(new double[] { age }); // answer will be 2.
+            return answer;
         }
 
     }
