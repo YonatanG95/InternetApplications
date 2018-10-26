@@ -137,7 +137,7 @@ var xAxis = d3.svg.axis()
 var yAxis = d3.svg.axis()
     .scale(y)
     .orient("left")
-    .ticks(10);
+    .ticks(8);
 var tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
@@ -152,7 +152,7 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
-
+    $("svg").css({ left: 20, position: 'absolute' });
     svg.call(tip);
 // load the data
     d3.json("http://localhost:50381/api/Appointmentsapi", function (error, data) {
