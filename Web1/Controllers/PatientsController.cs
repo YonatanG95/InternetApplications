@@ -433,7 +433,7 @@ namespace Web1.Controllers
         }
 
         [HttpPost, ActionName("RecommendedCheckupbyAge")]
-        public int RecommendedCheckupbyAge(int age)
+        public string RecommendedCheckupbyAge(int age)
         {
             //int bloodCounter = 0, ctCounter = 0, MRICounter = 0, fecesCounter = 0, urineCounter = 0;
             // Create some sample learning data. In this data,
@@ -444,6 +444,7 @@ namespace Web1.Controllers
             List<int> outputs = new List<int>();
             List<string> types = new List<string>();
             int classcounter=0;
+            Dictionary<int, string> docs = new Dictionary<int, string>();
             foreach (Checkup checkup in db.Checkups.ToList())
             {
                 if (!types.Contains(checkup.Type))
@@ -457,22 +458,15 @@ namespace Web1.Controllers
 
                 foreach (Checkup checkup in db.Checkups.ToList())
                 {
-                    if (checkup.Result)
+                    if (checkup.Type == type)
                     {
-                        if (checkup.Type == type)
-                        {
-                            outputs.Add(classcounter);
-                            Patient p = db.Patients.Find(checkup.Patient_ID);
-                            inputs.Add(new double[] { (p.Age) });
-
-                        }
-
-                        //Patient p = db.Patients.Find(checkup.Patient_ID);
-
+                        outputs.Add(classcounter);
+                        Patient p = db.Patients.Find(checkup.Patient_ID);
+                        inputs.Add(new double[] { (p.Age) });
 
                     }
-                   
                 }
+                docs[classcounter] = type;
                 classcounter++;
             }
             /*foreach (Checkup checkup in db.Checkups.ToList())
@@ -597,11 +591,11 @@ namespace Web1.Controllers
 
             // After the algorithm has been created, we can classify a new instance:
             int answer = knn.Decide(new double[] { age }); // answer will be 2.
-            return answer;
+            return docs[answer];
         }
 
         [HttpPost, ActionName("RecommendedDocbyAge")]
-        public int RecommendedDocbyAge(int age)
+        public string RecommendedDocbyAge(int age)
         {
 
             //int amirCounter = 0, inonCounter = 0, orCounter = 0, maayanCounter = 0;
@@ -613,7 +607,7 @@ namespace Web1.Controllers
             List<int> outputs = new List<int>();
             List<int> countersdoctors = new List<int>();
             int classcounter = 0;
-
+            Dictionary<int, string> docs = new Dictionary<int, string>();
 
 
             foreach (Doctor doctor in db.Doctors.ToList())
@@ -633,7 +627,7 @@ namespace Web1.Controllers
                     }
 
                 }
-
+                docs[classcounter] = doctor.FirstName + ' ' + doctor.LastName;
                 classcounter++;
                 //Patient p = db.Patients.Find(checkup.Patient_ID);
 
@@ -743,7 +737,7 @@ namespace Web1.Controllers
             // After the algorithm has been created, we can classify a new instance:
             //Enter age here and get doctor by class number
             int answer = knn.Decide(new double[] { age });
-            return answer;
+            return docs[answer];
         }
 
     }
