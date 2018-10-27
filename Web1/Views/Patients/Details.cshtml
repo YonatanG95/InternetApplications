@@ -4,7 +4,7 @@
     ViewBag.Title = "Details";
 }
 
-<body onload="recommendedLab()">
+<body onload="ml()">
     <h2>Details</h2>
 
     <div>
@@ -97,12 +97,19 @@
         </dl>
     </div>
     <h6 id="recLab">text</h6>
+    <h6 id="recDoc">text</h6>
     <p>
         @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
         @Html.ActionLink("Back to List", "Index")
     </p>
 </body>
 <script type="text/javascript">
+
+    function ml() {
+        recommendedLab();
+        recommendedDoc();
+    }
+
     function recommendedLab() {
         var getAge = document.getElementById("pAge").innerHTML;// $('#pAge');
             //if (doctor.val() == null || doctor.val() == '') {
@@ -130,4 +137,14 @@
                 }
             }
         });*@
+
+    function recommendedDoc() {
+        var getAge = document.getElementById("pAge").innerHTML;// $('#pAge');
+
+        var url = '@Url.Action("RecommendedDocbyAge", "Patients")';
+        $.post(url, { age: getAge }, function (data) {
+            document.getElementById("recDoc").innerHTML = "Recommended doctor for your age is: " + data;
+            });
+        }
+
 </script>
