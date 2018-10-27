@@ -20,7 +20,6 @@ namespace Web1.Controllers
         // GET: Doctors
         public ActionResult Index()
         {
-           
             if (User.Identity.IsAuthenticated)
             {
                 string cid = User.Identity.GetUserId();
