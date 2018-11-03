@@ -20,7 +20,7 @@ namespace Web1.Controllers
         private ApplicationDbContext appDb = new ApplicationDbContext();
 
         // GET: Appointments
-        public ActionResult Index(string docID, string patID)
+        public ActionResult Index(string docID, string patID, string dateTime)
         {
             
             if (User.Identity.IsAuthenticated)
@@ -30,33 +30,41 @@ namespace Web1.Controllers
                 var roles = userManager.GetRoles(cid);
                 if (roles[0] == "Doctor")
                 {
-                    var apps = from a in db.Appointments
-                               select a;
+                    var appointmentsRes = from appointment in db.Appointments
+                               join patient in db.Patients on appointment.Patient_ID equals patient.ID
+                               join doctor in db.Doctors on appointment.Doctor_ID equals doctor.ID
+                               select new { Appointment = appointment, Patient = patient, Doctor = doctor };
                     if (!String.IsNullOrEmpty(docID))
                     {
-                        apps = apps.Where(s => s.Doctor_ID.Contains(docID));
+                        appointmentsRes = appointmentsRes.Where(s => s.Appointment.Doctor_ID.Contains(docID));
                     }
                     if (!String.IsNullOrEmpty(patID))
                     {
-                        apps = apps.Where(s => s.Patient_ID.Contains(patID));
+                        appointmentsRes = appointmentsRes.Where(s => s.Appointment.Patient_ID.Contains(patID));
+                    }
+                    if (!String.IsNullOrEmpty(dateTime))
+                    {
+                        DateTime dateTime2 = DateTime.Parse(dateTime);
+                        appointmentsRes = appointmentsRes.Where(s => s.Appointment.Date_Time.Equals(dateTime2));
                     }
                     //if (!String.IsNullOrEmpty(dateTime))
                     //{
                     //    int ageInt = Int32.Parse(dateTime);
                     //    apps = patients.Where(s => s.Date_Time == dateTime);
                     //}
-                    return View(apps.ToList());
+                    List<(Appointment, Patient, Doctor)> appointments = new List<(Appointment, Patient, Doctor)>();
+                    appointmentsRes.ToList().ForEach(a => appointments.Add((a.Appointment, a.Patient, a.Doctor)));
+                    return View(appointments);
                 }
                 else
                 {
-                    List<Appointment> appointments = new List<Appointment>();
-                    foreach (Appointment appointment in db.Appointments.ToList())
-                    {
-                        if (cid == appointment.Patient_ID)
-                        {
-                            appointments.Add(appointment);
-                        }
-                    }
+                    var appointmentsRes = from appointment in db.Appointments
+                                          join patient in db.Patients on appointment.Patient_ID equals patient.ID
+                                          join doctor in db.Doctors on appointment.Doctor_ID equals doctor.ID
+                                          where patient.ID == cid
+                                          select new { Appointment = appointment, Patient = patient, Doctor = doctor };
+                    List<(Appointment, Patient, Doctor)> appointments = new List<(Appointment, Patient, Doctor)>();
+                    appointmentsRes.ToList().ForEach(a => appointments.Add((a.Appointment, a.Patient, a.Doctor)));
                     return View(appointments);
                 }
             }
@@ -81,18 +89,28 @@ namespace Web1.Controllers
                 {
                     return HttpNotFound();
                 }
+                Patient patient = db.Patients.Find(appointment.Patient_ID);
+                if (patient == null)
+                {
+                    return HttpNotFound();
+                }
+                Doctor doctor = db.Doctors.Find(appointment.Doctor_ID);
+                if (doctor == null)
+                {
+                    return HttpNotFound();
+                }
                 string cid = User.Identity.GetUserId();
                 UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
                 var roles = userManager.GetRoles(cid);
                 if (roles[0] == "Doctor")
                 {
-                    return View(appointment);
+                    return View((appointment, patient, doctor));
                 }
                 else
                 {
                     if (cid == appointment.Patient_ID)
                     {
-                        return View(appointment);
+                        return View((appointment, patient, doctor));
                     }
                     else
                     {

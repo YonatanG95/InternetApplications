@@ -28,18 +28,21 @@ namespace Web1.Controllers
                 var roles = userManager.GetRoles(cid);
                 if (roles[0] == "Doctor")
                 {
-                    return View(db.Checkups.ToList());
+                    var checkupsRes = from checkup in db.Checkups
+                                   join patient in db.Patients on checkup.Patient_ID equals patient.ID
+                                   select new { Checkup = checkup, Patient = patient };
+                    List<(Checkup, Patient)> checkups = new List<(Checkup, Patient)>();
+                    checkupsRes.ToList().ForEach(c => checkups.Add((c.Checkup, c.Patient)));
+                    return View(checkups);
                 }
                 else
                 {
-                    List<Checkup> checkups = new List<Checkup>();
-                    foreach (Checkup checkup in db.Checkups.ToList())
-                    {
-                        if (cid == checkup.Patient_ID)
-                        {
-                            checkups.Add(checkup);
-                        }
-                    }
+                    var checkupsRes = from checkup in db.Checkups
+                                      join patient in db.Patients on checkup.Patient_ID equals patient.ID
+                                      where patient.ID == cid
+                                      select new { Checkup = checkup, Patient = patient };
+                    List<(Checkup, Patient)> checkups = new List<(Checkup, Patient)>();
+                    checkupsRes.ToList().ForEach(c => checkups.Add((c.Checkup, c.Patient)));
                     return View(checkups);
                 }
             }
@@ -63,18 +66,23 @@ namespace Web1.Controllers
                 {
                     return HttpNotFound();
                 }
+                Patient patient = db.Patients.Find(checkup.Patient_ID);
+                if (patient == null)
+                {
+                    return HttpNotFound();
+                }
                 string cid = User.Identity.GetUserId();
                 UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(appDb));
                 var roles = userManager.GetRoles(cid);
                 if (roles[0] == "Doctor")
                 {
-                    return View(checkup);
+                    return View((checkup, patient));
                 }
                 else
                 {
                     if (cid == checkup.Patient_ID)
                     {
-                        return View(checkup);
+                        return View((checkup, patient));
                     }
                     else
                     {

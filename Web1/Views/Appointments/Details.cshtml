@@ -1,4 +1,4 @@
-﻿@model Web1.Models.Appointment
+﻿@model (Web1.Models.Appointment, Web1.Models.Patient, Web1.Models.Doctor)
 
 @{
     ViewBag.Title = "Details";
@@ -11,47 +11,55 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.ID)
+            @Html.DisplayNameFor(model => model.Item1.ID)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ID)
+            @Html.DisplayFor(model => model.Item1.ID)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Date_Time)
+            @Html.DisplayNameFor(model => model.Item1.Date_Time)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Date_Time)
-        </dd>
-
-        @*<dt>
-            @Html.DisplayNameFor(model => model.IsAvaliable)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsAvaliable)
-        </dd>*@
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Doctor_ID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Doctor_ID)
+            @Html.DisplayFor(model => model.Item1.Date_Time)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Patient_ID)
+            Patient First Name
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Patient_ID)
+            @Html.DisplayFor(model => model.Item2.FirstName)
+        </dd>
+
+        <dt>
+            Patient Last Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Item2.LastName)
+        </dd>
+
+        <dt>
+            Doctor First Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Item3.FirstName)
+        </dd>
+
+        <dt>
+            Doctor Last Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Item3.LastName)
         </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Item1.ID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

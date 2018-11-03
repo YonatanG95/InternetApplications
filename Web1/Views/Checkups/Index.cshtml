@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Web1.Models.Checkup>
+﻿@model IEnumerable<(Web1.Models.Checkup, Web1.Models.Patient)>
 
 @{
     ViewBag.Title = "Index";
@@ -12,47 +12,53 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.ID)
+            @Html.DisplayNameFor(model => model.Item1.ID)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Type)
+            @Html.DisplayNameFor(model => model.Item1.Type)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Result)
+            @Html.DisplayNameFor(model => model.Item1.Result)
         </th>
         @*<th>
-                @Html.DisplayNameFor(model => model.Doctor_ID)
-            </th>*@
+            @Html.DisplayNameFor(model => model.Doctor_ID)
+        </th>*@
         <th>
-            @Html.DisplayNameFor(model => model.Patient_ID)
+            @Html.DisplayNameFor(model => model.Item2.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item2.LastName)
         </th>
         <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Result)
-            </td>
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.Doctor_ID)
-                </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.Patient_ID)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-            </td>
-        </tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Item1.ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Item1.Type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Item1.Result)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.Doctor_ID)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.Item2.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Item2.LastName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Item1.ID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Item1.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Item1.ID })
+        </td>
+    </tr>
     }
 
 </table>

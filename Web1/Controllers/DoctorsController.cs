@@ -27,7 +27,12 @@ namespace Web1.Controllers
                 var roles = userManager.GetRoles(cid);
                 if (roles[0] == "Doctor")
                 {
-                    return View(db.Doctors.ToList());
+                    var doctors = from d in db.Doctors
+                               group d by d.ID into dg
+                               select dg;
+                    List<Doctor> doctorsList = new List<Doctor>();
+                    doctors.ToList().ForEach(dg => dg.ToList().ForEach(doc => doctorsList.Add(doc)));
+                    return View(doctorsList);
                 }
                 else
                 {

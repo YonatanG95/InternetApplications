@@ -1,4 +1,4 @@
-﻿@model Web1.Models.Checkup
+﻿@model (Web1.Models.Checkup, Web1.Models.Patient)
 
 @{
     ViewBag.Title = "Details";
@@ -11,47 +11,47 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.ID)
+            @Html.DisplayNameFor(model => model.Item1.ID)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ID)
+            @Html.DisplayFor(model => model.Item1.ID)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Type)
+            @Html.DisplayNameFor(model => model.Item1.Type)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Type)
+            @Html.DisplayFor(model => model.Item1.Type)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Result)
+            @Html.DisplayNameFor(model => model.Item1.Result)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Result)
+            @Html.DisplayFor(model => model.Item1.Result)
         </dd>
 
-        @*<dt>
-            @Html.DisplayNameFor(model => model.Doctor_ID)
+        <dt>
+            @Html.DisplayNameFor(model => model.Item2.FirstName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Doctor_ID)
-        </dd>*@
+            @Html.DisplayFor(model => model.Item2.FirstName)
+        </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Patient_ID)
+            @Html.DisplayNameFor(model => model.Item2.LastName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Patient_ID)
+            @Html.DisplayFor(model => model.Item2.LastName)
         </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Item1.ID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
