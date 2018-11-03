@@ -1,4 +1,7 @@
-﻿@model IEnumerable<Web1.Models.Appointment>
+﻿@using Microsoft.AspNet.Identity;
+@using Web1.Models;
+@using Microsoft.AspNet.Identity.EntityFramework;
+@model IEnumerable<Web1.Models.Appointment>
 
 @{
     ViewBag.Title = "Index";
@@ -11,11 +14,17 @@
 </p>
 @using (Html.BeginForm())
 {
-    <p>
-        <h6>Filter:</h6>
-        Doctor's ID: @Html.TextBox("docID") Patient's ID: @Html.TextBox("patID")  Date: @Html.TextBox("dateTime")
-        <input type="submit" value="Search" />
-    </p>
+    string cid = User.Identity.GetUserId();
+    UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+    var roles = userManager.GetRoles(cid);
+    if (roles[0] == "Doctor")
+    {
+        <p>
+            <h6>Filter:</h6>
+            Doctor's ID: @Html.TextBox("docID") Patient's ID: @Html.TextBox("patID")  Date: @Html.TextBox("dateTime")
+            <input type="submit" value="Search" />
+        </p>
+    }
 }
 <table class="table">
     <tr>

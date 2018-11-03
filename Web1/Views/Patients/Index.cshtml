@@ -1,4 +1,7 @@
-﻿@model IEnumerable<Web1.Models.Patient>
+﻿@using Microsoft.AspNet.Identity;
+@using Web1.Models;
+@using Microsoft.AspNet.Identity.EntityFramework;
+@model IEnumerable<Web1.Models.Patient>
 
 @{
     ViewBag.Title = "Index";
@@ -16,8 +19,7 @@
             });
         }
     </script>
-    <script 
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSBS2OpxbTvffxXEP8ydmTil5clFdbXYA&callback=initMap">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSBS2OpxbTvffxXEP8ydmTil5clFdbXYA&callback=initMap">
     </script>
 
     <script>
@@ -40,11 +42,17 @@
     </p>
     @using (Html.BeginForm())
     {
-        <p>
-            <h6>Filter:</h6>
-            name: @Html.TextBox("fname") last-name: @Html.TextBox("lname")  age: @Html.TextBox("age")
-            <input type="submit" value="Search" />
-        </p>
+        string cid = User.Identity.GetUserId();
+        UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+        var roles = userManager.GetRoles(cid);
+        if (roles[0] == "Doctor")
+        {
+            <p>
+                <h6>Filter:</h6>
+                name: @Html.TextBox("fname") last-name: @Html.TextBox("lname")  age: @Html.TextBox("age")
+                <input type="submit" value="Search" />
+            </p>
+        }
     }
     <table cellpadding="7">
         <tr>

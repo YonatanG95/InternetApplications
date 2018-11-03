@@ -117,7 +117,11 @@ namespace Web1.Controllers
                 {
                     if (ModelState.IsValid)
                     {
-                        
+                        if (db.Doctors.Find(doctor.ID) != null)
+                        {
+                            TempData["msg"] = "Doctor ID already exists.";
+                            return View("Error");
+                        }
                         db.Doctors.Add(doctor);
                         db.SaveChanges();
                         return RedirectToAction("Index");

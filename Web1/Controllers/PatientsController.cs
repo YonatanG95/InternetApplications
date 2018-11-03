@@ -23,7 +23,6 @@ namespace Web1.Controllers
         // GET: Patients
         public ActionResult Index(string fname, string lname, string age)
         {
-            
             if (User.Identity.IsAuthenticated)
             {
                 
@@ -52,7 +51,12 @@ namespace Web1.Controllers
                 }
                 else
                 {
-                    return View("AccessDenied");
+                    Patient p = db.Patients.Find(cid);
+                    if (p == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(new List<Patient> { p });
                 }
             }
             else
@@ -146,6 +150,11 @@ namespace Web1.Controllers
                 {
                     if (ModelState.IsValid)
                     {
+                        if (db.Patients.Find(patient.ID) != null)
+                        {
+                            TempData["msg"] = "Patient ID already exists.";
+                            return View("Error");
+                        }
                         db.Patients.Add(patient);
                         db.SaveChanges();
                         return RedirectToAction("Index");

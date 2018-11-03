@@ -49,7 +49,15 @@ namespace Web1.Controllers
                 }
                 else
                 {
-                    return View("AccessDenied");
+                    List<Appointment> appointments = new List<Appointment>();
+                    foreach (Appointment appointment in db.Appointments.ToList())
+                    {
+                        if (cid == appointment.Patient_ID)
+                        {
+                            appointments.Add(appointment);
+                        }
+                    }
+                    return View(appointments);
                 }
             }
             else
@@ -122,6 +130,11 @@ namespace Web1.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    if (db.Appointments.Find(appointment.ID) != null)
+                    {
+                        TempData["msg"] = "Appointment ID already in use.";
+                        return View("Error");
+                    }
                     string cid = User.Identity.GetUserId();
                     appointment.Patient_ID = cid;
                     appointment.Patient = db.Patients.Find(cid);
@@ -340,7 +353,9 @@ namespace Web1.Controllers
             return "not booked";
         }
 
+        // REDACTED - Now functionality is in Index, left in comment for good measure
         // GET: Appointments/ShowUserAppointments
+        /*
         public ActionResult ShowUserAppointments()
         {
             if (User.Identity.IsAuthenticated)
@@ -376,5 +391,6 @@ namespace Web1.Controllers
                 return View("NotLoggedIn");
             }
         }
+        */
     }
 }

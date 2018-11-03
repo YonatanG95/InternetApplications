@@ -32,7 +32,15 @@ namespace Web1.Controllers
                 }
                 else
                 {
-                    return View("AccessDenied");
+                    List<Checkup> checkups = new List<Checkup>();
+                    foreach (Checkup checkup in db.Checkups.ToList())
+                    {
+                        if (cid == checkup.Patient_ID)
+                        {
+                            checkups.Add(checkup);
+                        }
+                    }
+                    return View(checkups);
                 }
             }
             else
@@ -121,6 +129,11 @@ namespace Web1.Controllers
                 {
                     if (ModelState.IsValid)
                     {
+                        if (db.Checkups.Find(checkup.ID) != null)
+                        {
+                            TempData["msg"] = "Checkup ID already in use.";
+                            return View("Error");
+                        }
                         db.Checkups.Add(checkup);
                         db.SaveChanges();
                         return RedirectToAction("Index");
@@ -282,7 +295,10 @@ namespace Web1.Controllers
         }
 
 
+
+        // REDACTED - Now functionality is in Index, left in comment for good measure
         // GET: Checkups/ShowUserCheckups
+        /*
         public ActionResult ShowUserCheckups()
         {
             if (User.Identity.IsAuthenticated)
@@ -318,5 +334,6 @@ namespace Web1.Controllers
                 return View("NotLoggedIn");
             }
         }
+        */
     }
 }
