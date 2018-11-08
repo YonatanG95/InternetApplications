@@ -103,22 +103,12 @@
 }
 
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
-
-
-
 <body>
     <div class="right">
-        <h3> Enter the patient address and press the button</h3>
+        <h5> Enter the patient address and press the button</h5>
 
         <input id="address" type="text" placeholder="Enter address here" />
-        <button id="btn">Get LatLong</button>
+        <button id="btn">Get location</button>
     </div>
 
     <script>
@@ -155,3 +145,12 @@
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSBS2OpxbTvffxXEP8ydmTil5clFdbXYA">
     </script>
 </body>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
