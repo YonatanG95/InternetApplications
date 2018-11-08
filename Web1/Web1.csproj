@@ -306,6 +306,7 @@
     <Content Include="datetimepicker\tests\tests\methods.js" />
     <Content Include="datetimepicker\tests\tests\options.js" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Model1.Context.tt">
@@ -357,6 +358,28 @@
     <Content Include="datetimepicker\package-lock.json" />
     <Content Include="datetimepicker\package.json" />
     <Content Include="datetimepicker\README.md" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\Lato-Black.ttf" />
+    <Content Include="fonts\Lato-BlackItalic.ttf" />
+    <Content Include="fonts\Lato-Bold.ttf" />
+    <Content Include="fonts\Lato-BoldItalic.ttf" />
+    <Content Include="fonts\Lato-Hairline.ttf" />
+    <Content Include="fonts\Lato-HairlineItalic.ttf" />
+    <Content Include="fonts\Lato-Heavy.ttf" />
+    <Content Include="fonts\Lato-HeavyItalic.ttf" />
+    <Content Include="fonts\Lato-Italic.ttf" />
+    <Content Include="fonts\Lato-Light.ttf" />
+    <Content Include="fonts\Lato-LightItalic.ttf" />
+    <Content Include="fonts\Lato-Medium.ttf" />
+    <Content Include="fonts\Lato-MediumItalic.ttf" />
+    <Content Include="fonts\Lato-Regular.ttf" />
+    <Content Include="fonts\Lato-Semibold.ttf" />
+    <Content Include="fonts\Lato-SemiboldItalic.ttf" />
+    <Content Include="fonts\Lato-Thin.ttf" />
+    <Content Include="fonts\Lato-ThinItalic.ttf" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -487,6 +510,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
+      <UserProperties Content_4bootstrap-grid_1css_1map__JSONSchema="http://json.schemastore.org/travis" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

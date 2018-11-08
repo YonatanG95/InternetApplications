@@ -1,7 +1,76 @@
 ﻿@{
     ViewBag.Title = "About";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+<header>
+    <h2>@ViewBag.Title.</h2>
+    @*<h3>@ViewBag.Message</h3>*@
+    <p class="intro">The About page of CollegeClinic, the best Clinic there is.</p>
+</header>
 
-<p>Use this area to provide additional information.</p>
+<section>
+    <h3>Information about CollegeClinic and its affiliation</h3>
+    <p>
+        CollegeClinic is a private clinic branch of the renowned Hospital Scared Heart.
+        We offers many diffrennt Checkups and Appointments with all kinds of doctors for people all around the country.
+        and of course our doctor are the best doctors .
+    </p>
+    <aside>
+        <h4>Sacred Heart Hospital</h4>
+        <p class="hospital">
+            Sacred Heart Hospital was a private teaching hospital in San DiFrangeles, California.
+            It offered emergency services, clinical help, and other medical processes.
+            It had a large staff of surgical and medical doctors, and offered a great educational setting for medical students and interns.
+            It was demolished between 2009 and 2011 and was replaced with the New Sacred Heart Hospital.
+        </p>
+    </aside>
+</section>
+
+<section>
+    <h3>Information about CollegeClinic amazing abilities</h3>
+    <p>
+        Because we are a private clinic we have access to a lot of cutting edge mediical technology such as:
+        MRI, CT, Pills as Devices, Heart pumps, Alleviating Disability, Artificial Womb for Premature Babies and etc..
+    </p>
+    <p class="end"><strong>So trust us, the cutting edge technology and the amazing staff assures you that we aren't just good, we are the best!!</strong></p>
+</section>
+
+<canvas id="myCanvas" width="600" height="100" style="border:1px solid #d3d3d3;">
+    Your browser does not support the HTML5 canvas tag.
+</canvas>
+
+<style>
+    @@font-face {
+        font-family: Lato-BoldItalic;
+        src: url("~/fonts/Lato-BoldItalic.ttf") format("truetype");
+    }
+    .intro {
+        font-family: Lato-BoldItalic;
+        font-size: 20px;
+    }
+    h3 {
+        color: white;
+        text-shadow: 2px 2px 8px #000000;
+    }
+    .hospital {
+        -webkit-column-count: 3; /* Chrome, Safari, Opera */
+        column-count: 3;
+        -webkit-column-gap: 40px; /* Chrome, Safari, Opera */
+        column-gap: 40px;
+        -webkit-column-rule: 1px solid lightblue; /* Chrome, Safari, Opera */
+        column-rule: 1px solid lightblue;
+    }
+    .end {
+        border-radius: 25px;
+        background: turquoise;
+        padding: 20px;
+        width: 800px;
+        height: 100px;
+    }
+</style>
+
+<script>
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    ctx.font = "30px Arial";
+    ctx.strokeText("And Thank You for Choosing CollegeClinic", 10, 50);
+</script>
